@@ -2,7 +2,7 @@
 ; Name:      EEPROM_For_PIC12F1840.ASM
 ; Use:       EEPROM For PIC12F1840 Routines
 ;-------------------------------------------------------;
-; Copyright: ©2026 DTP
+; Copyright: (C)2026 DTP
 ;            Dysfunctional Technologies, Philippines
 ;            All Rights Reserved
 ;-------------------------------------------------------;
@@ -10,9 +10,12 @@
 ;            Owner, CEO, and CTO
 ;            Dysfunctional Technologies, Philippines
 ;-------------------------------------------------------;
-; Date:      September 25, 2026
-; Version:   V1.00
-; Project:   PIC-Messaging_PIC12F1840_EEPROM_MAX7219_I2C_IR_Remote
+; Project:   PIC-Messaging
+;            - PIC12F1840 (microcontroller)
+;            - EEPROM     (data storage)
+;            - MAX7219    (8x8 display)
+;            - I2C        (peripherals)
+;            - IR Remote  (user control & input)
 ;-------------------------------------------------------;
 #DEFINE  _EEPROM_FOR_PIC12F1840.ASM_
 #INCLUDE Common.INC
@@ -27,19 +30,6 @@ _EE_Read_Byte:
 ;-------------------------------------------------------;
 ; W destroyed. EE_Addr in, EE_Data out
 ;-------------------------------------------------------;
-;    BANKSEL EEADRL
-;    MOVFW   EE_Addr
-;    MOVWF   EEADRL
-;    CLRF    EEADRH
-;    BANKSEL EECON1
-;    BCF     EECON1, CFGS
-;    BCF     EECON1, EEPGD
-;    BSF     EECON1, RD
-;    BANKSEL EEDATL
-;    MOVFW   EEDATL
-;    MOVWF   EE_Data
-;    BANKSEL MEMORY
-;    RETURN
     BANKSEL EEADRL
     MOVFW   EE_Addr
     MOVWF   EEADRL
@@ -62,30 +52,6 @@ _EE_Write_Byte:
 ;-------------------------------------------------------;
 ; EE_Addr, EE_Data in. GIE off only for unlock.
 ;-------------------------------------------------------;
-;    BANKSEL EEADRL
-;    MOVFW   EE_Addr
-;    MOVWF   EEADRL
-;    CLRF    EEADRH
-;    BANKSEL EEDATL
-;    MOVFW   EE_Data
-;    MOVWF   EEDATL
-;    BANKSEL EECON1
-;    BCF     EECON1, CFGS
-;    BCF     EECON1, EEPGD
-;    BSF     EECON1, WREN
-;    TURN_OFF_INTS_M
-;    MOVLW   H'55'
-;    MOVWF   EECON2
-;    MOVLW   H'AA'
-;    MOVWF   EECON2
-;    BSF     EECON1, WR
-;_EE_WR_Wait:
-;    BTFSC   EECON1, WR
-;    GOTO    _EE_WR_Wait
-;    BCF     EECON1, WREN
-;    TURN_ON_INTS_M
-;    BANKSEL MEMORY
-;    RETURN
     BANKSEL MEMORY
     MOVFW   EE_Addr
     BANKSEL EEADRL
@@ -120,7 +86,6 @@ _EE_Diag_Write:
     CLRF    EE_Addr
     MOVLW   EE_TEST_PATTERN
     MOVWF   EE_Data
-;    GOTO    _EE_Write_Byte
     CALL    _EE_Write_Byte
     GOTO    _EE_Paint_W
 ;-------------------------------------------------------;
@@ -129,7 +94,6 @@ _EE_Diag_Write:
 _EE_Diag_Read:
 ;-------------------------------------------------------;
     CLRF    EE_Addr
-;    GOTO    _EE_Read_Byte
     CALL    _EE_Read_Byte
     GOTO    _EE_Paint_R
 ;-------------------------------------------------------;
@@ -193,13 +157,6 @@ _EE_Print_Hex:
     MOVFW   EE_Data
     ANDLW   H'0F'
     GOTO    _EE_Print_Nibble
-;    SET_CURSOR_M 5
-;    MOVWF   Temp1
-;    SWAPF   Temp1, W
-;    CALL    _EE_Print_Nibble
-;    SET_CURSOR_M 6
-;    MOVFW   Temp1
-;;    GOTO    _EE_Print_Nibble
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -225,15 +182,6 @@ _EE_PN_Out:
 ;-------------------------------------------------------;
 _Initialize_EEPROM_Subsystem:
 ;-------------------------------------------------------;
-    ; Initialize I/O Port (Interrupt)
-    ;---------------------------------------------------;
-    ;---------------------------------------------------;
-    ; Initialize External Interrupt
-    ;---------------------------------------------------;
-    ;---------------------------------------------------;
-    ; Enable Interrupts
-    ;---------------------------------------------------;
-    ;---------------------------------------------------;
     ; Initialize Variables
     ;---------------------------------------------------;
     BANKSEL MEMORY
@@ -245,10 +193,3 @@ _Initialize_EEPROM_Subsystem:
 ;-------------------------------------------------------;
     END
 ;-------------------------------------------------------;
-#DEFINE  _EEPROM.ASM_
-#INCLUDE Common.INC
-
-EEPROM_CODE CODE
-
-
-    END

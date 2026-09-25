@@ -2,7 +2,7 @@
 ; Name:      PIC12F1840.ASM
 ; Use:       PIC12F1840 Routines
 ;-------------------------------------------------------;
-; Copyright: ©2026 DTP
+; Copyright: (C)2026 DTP
 ;            Dysfunctional Technologies, Philippines
 ;            All Rights Reserved
 ;-------------------------------------------------------;
@@ -10,9 +10,12 @@
 ;            Owner, CEO, and CTO
 ;            Dysfunctional Technologies, Philippines
 ;-------------------------------------------------------;
-; Date:      September 24, 2026
-; Version:   V1.00
-; Project:   Messaging_8x136_V1.00_PIC12F1840_MAX7219_I2C_IR_Remote
+; Project:   PIC-Messaging
+;            - PIC12F1840 (microcontroller)
+;            - EEPROM     (data storage)
+;            - MAX7219    (8x8 display)
+;            - I2C        (peripherals)
+;            - IR Remote  (user control & input)
 ;-------------------------------------------------------;
 #DEFINE  _PIC12F1840.ASM_
 #INCLUDE Common.INC

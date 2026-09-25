@@ -2,7 +2,7 @@
 ; Name:      Messaging_For_8x136_Matrix_Display.ASM
 ; Use:       Messaging For 8x136 Matrix Display Routines
 ;-------------------------------------------------------;
-; Copyright: ©2026 DTP
+; Copyright: (C)2026 DTP
 ;            Dysfunctional Technologies, Philippines
 ;            All Rights Reserved
 ;-------------------------------------------------------;
@@ -10,11 +10,14 @@
 ;            Owner, CEO, and CTO
 ;            Dysfunctional Technologies, Philippines
 ;-------------------------------------------------------;
-; Date:      September 24, 2026
-; Version:   V1.00
-; Project:   Messaging_8x136_V1.00_PIC12F1840_MAX7219_I2C_IR_Remote
+; Project:   PIC-Messaging
+;            - PIC12F1840 (microcontroller)
+;            - EEPROM     (data storage)
+;            - MAX7219    (8x8 display)
+;            - I2C        (peripherals)
+;            - IR Remote  (user control & input)
 ;-------------------------------------------------------;
-#DEFINE  _MESSAGING.ASM_ ;
+#DEFINE  _MESSAGING.ASM_
 #INCLUDE Common.INC
 ;-------------------------------------------------------;
 

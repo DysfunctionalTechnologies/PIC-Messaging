@@ -12,7 +12,7 @@ for f in *.ASM; do
   gpasm -c -I. "$f"
 done
 
-gplink -m -o "$HEX" *.o
+gplink -s ./12f1840_messaging.lkr -m -o "$HEX" *.o
 ls -l "$HEX"
 echo "OK build"
 
