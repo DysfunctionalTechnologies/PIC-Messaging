@@ -32,6 +32,7 @@ _EE_Read_Byte:
 ;-------------------------------------------------------;
     BANKSEL MEMORY
     MOVFW   EE_Addr
+    BANKSEL EEADRL
     MOVWF   EEADRL
     CLRF    EEADRH
     BANKSEL EEDATL
@@ -187,12 +188,12 @@ _EE_Print_Slot:
 ; Current_Display = slot 0..13
 ; Slot = [dwell][17 chars]. Dwell 0xFF = empty / end.
 ;-------------------------------------------------------;
-	BANKSEL MEMORY
-	CLRF	Buffer_Digit_Ptr
-    MOVLW	A'X'
-    CALL	_Print_Char
-    RETURN
-;    BANKSEL MEMORY
+;	BANKSEL MEMORY
+;	CLRF	Buffer_Digit_Ptr
+;    MOVLW	A'X'
+;    CALL	_Print_Char
+;    RETURN
+    BANKSEL MEMORY
     MOVFW   Current_Display
     MOVWF   EE_Addr           ; *1
     LSLF    EE_Addr, F        ; *2
@@ -249,9 +250,9 @@ _EE_Sanitize:
     SUBWF   Temp2, W
     SKPC
     GOTO    _EE_San_Space
-    MOVLW   A'Z'
+    MOVLW   A'Z'+1
     SUBWF   Temp2, W
-    SKPNC
+    SKPC
     GOTO    _EE_San_OK
 _EE_San_Space:
     MOVLW   A' '
