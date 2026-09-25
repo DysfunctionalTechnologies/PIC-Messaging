@@ -23,7 +23,7 @@
 ;-------------------------------------------------------;
 ; Defines
 ;-------------------------------------------------------;
-#DEFINE EE_TEST_ADDR    H'00'
+#DEFINE EE_TEST_ADDR    H'FF'
 #DEFINE EE_TEST_PATTERN H'5A'
 
 #DEFINE EE_GLASS_BIT    2
@@ -45,6 +45,7 @@
     GLOBAL  _EE_Write_Byte
     GLOBAL  _EE_Diag_Write
     GLOBAL  _EE_Diag_Read
+    GLOBAL	_EE_Print_Slot
 ;-------------------------------------------------------;
 #ELSE ; !_EEPROM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
@@ -55,6 +56,7 @@
     EXTERN  _EE_Write_Byte
     EXTERN  _EE_Diag_Write
     EXTERN  _EE_Diag_Read
+    EXTERN	_EE_Print_Slot
 ;-------------------------------------------------------;
 #ENDIF ; !_EEPROM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;

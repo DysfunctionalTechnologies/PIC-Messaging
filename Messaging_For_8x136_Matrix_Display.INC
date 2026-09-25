@@ -24,15 +24,18 @@
 ; Defines
 ;-------------------------------------------------------;
 #DEFINE MAX_DISPLAY          6
-#DEFINE MIN_DISPLAY          0
+#DEFINE MIN_DISPLAY          1
 #DEFINE DISPLAY_MASK         H'0F'
     ;---------------------------------------------------;
-#DEFINE TIMER_100MS_RELOAD     10 ; * 5ms = 100ms
-#DEFINE TIMER_250MS_RELOAD     25 ; * 5ms = 250ms
-#DEFINE TIMER_1SEC_RELOAD     100 ; * 5ms =   1S
-#DEFINE TIMER_2SEC_RELOAD     200 ; * 5ms =   2S
-#DEFINE TIMER_5SEC_RELOAD     500 ; * 5ms =   5S
-#DEFINE TIMER_15SEC_RELOAD   1500 ; * 5ms =  15S
+#DEFINE TIMER_100MS_RELOAD     20 ; * 5ms = 100ms
+#DEFINE TIMER_250MS_RELOAD     50 ; * 5ms = 250ms
+#DEFINE TIMER_1SEC_RELOAD     200 ; * 5ms =   1S
+#DEFINE TIMER_2SEC_RELOAD     400 ; * 5ms =   2S
+#DEFINE TIMER_3SEC_RELOAD     600 ; * 5ms =   2S
+#DEFINE TIMER_4SEC_RELOAD     800 ; * 5ms =   2S
+#DEFINE TIMER_5SEC_RELOAD    1000 ; * 5ms =   5S
+#DEFINE TIMER_10SEC_RELOAD   2000 ; * 5ms =  15S
+#DEFINE TIMER_15SEC_RELOAD   3000 ; * 5ms =  15S
     ;---------------------------------------------------;
 #DEFINE INIT_FLAG_BIT        0
 #DEFINE INIT_FLAG            Messaging_Flags, INIT_FLAG_BIT

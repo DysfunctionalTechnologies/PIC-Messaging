@@ -30,7 +30,7 @@ _EE_Read_Byte:
 ;-------------------------------------------------------;
 ; W destroyed. EE_Addr in, EE_Data out
 ;-------------------------------------------------------;
-    BANKSEL EEADRL
+    BANKSEL MEMORY
     MOVFW   EE_Addr
     MOVWF   EEADRL
     CLRF    EEADRH
@@ -83,7 +83,8 @@ _EE_WR_Wait:
 ;-------------------------------------------------------;
 _EE_Diag_Write:
 ;-------------------------------------------------------;
-    CLRF    EE_Addr
+    MOVLW   EE_TEST_ADDR     ; H'FF'
+    MOVWF   EE_Addr
     MOVLW   EE_TEST_PATTERN
     MOVWF   EE_Data
     CALL    _EE_Write_Byte
@@ -93,7 +94,8 @@ _EE_Diag_Write:
 ;-------------------------------------------------------;
 _EE_Diag_Read:
 ;-------------------------------------------------------;
-    CLRF    EE_Addr
+    MOVLW   EE_TEST_ADDR     ; H'FF'
+    MOVWF   EE_Addr
     CALL    _EE_Read_Byte
     GOTO    _EE_Paint_R
 ;-------------------------------------------------------;
@@ -180,6 +182,86 @@ _EE_PN_Out:
 ;-------------------------------------------------------;
     
 ;-------------------------------------------------------;
+_EE_Print_Slot:
+;-------------------------------------------------------;
+; Current_Display = slot 0..13
+; Slot = [dwell][17 chars]. Dwell 0xFF = empty / end.
+;-------------------------------------------------------;
+	BANKSEL MEMORY
+	CLRF	Buffer_Digit_Ptr
+    MOVLW	A'X'
+    CALL	_Print_Char
+    RETURN
+;    BANKSEL MEMORY
+    MOVFW   Current_Display
+    MOVWF   EE_Addr           ; *1
+    LSLF    EE_Addr, F        ; *2
+    MOVFW   EE_Addr
+    MOVWF   Temp1             ; save *2
+    LSLF    EE_Addr, F        ; *4
+    LSLF    EE_Addr, F        ; *8
+    LSLF    EE_Addr, F        ; *16
+    MOVFW   Temp1
+    ADDWF   EE_Addr, F        ; *18
+    ;---------------------------------------------------;
+    CALL    _EE_Read_Byte     ; dwell
+    BANKSEL MEMORY
+    MOVFW   EE_Data
+    XORLW   H'FF'
+    SKPNZ
+    GOTO    _EEPS_Empty
+    ;---------------------------------------------------;
+    INCF    EE_Addr, F        ; first text byte
+    CLRF    Temp1             ; column 0..16
+    ;---------------------------------------------------;
+_EEPS_Next:
+    BANKSEL MEMORY
+    MOVFW   Temp1
+    MOVWF   Buffer_Digit_Ptr
+    CALL    _EE_Read_Byte
+    BANKSEL MEMORY
+    MOVFW   EE_Data
+    CALL    _EE_Sanitize
+    CALL    _Print_Char
+    BANKSEL MEMORY
+    INCF    EE_Addr, F
+    INCF    Temp1, F
+    MOVLW   17
+    XORWF   Temp1, W
+    SKPZ
+    GOTO    _EEPS_Next
+    RETURN
+;-------------------------------------------------------;
+_EEPS_Empty:
+    MOVFW   Current_Display
+    SKPNZ
+    RETURN                    ; slot 0 empty: nothing to show
+    CLRF    Current_Display
+    GOTO    _EE_Print_Slot
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
+_EE_Sanitize:
+; W in/out. Bad glyph -> space.
+;-------------------------------------------------------;
+    MOVWF   Temp2
+    MOVLW   A' '
+    SUBWF   Temp2, W
+    SKPC
+    GOTO    _EE_San_Space
+    MOVLW   A'Z'
+    SUBWF   Temp2, W
+    SKPNC
+    GOTO    _EE_San_OK
+_EE_San_Space:
+    MOVLW   A' '
+    RETURN
+_EE_San_OK:
+    MOVFW   Temp2
+    RETURN
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
 _Initialize_EEPROM_Subsystem:
 ;-------------------------------------------------------;
     ; Initialize Variables
@@ -187,9 +269,37 @@ _Initialize_EEPROM_Subsystem:
     BANKSEL MEMORY
     CLRF    EE_Addr
     CLRF    EE_Data
+    BCF		EE_GLASS_FLAG
     RETURN
 ;-------------------------------------------------------;
 
+;-------------------------------------------------------;
+ org __EEPROM_START
+;-------------------------------------------------------;
+; First word = dwell (* 100ms). If 0xFF, end of strings
+; Following words 1-17 - the actual string
+;-------------------------------------------------------;
+MSGString1:
+    DE  30 ; * 100ms = 3 seconds
+    DE  "  EE  MSG V",(VERSION_MAJOR & H'0F') + '0', ".", ((VERSION_MINOR & H'F0') >> 4) + '0', (VERSION_MINOR & H'0F') + '0', "  " ; 0
+MSGString2:
+    DE  30 ; * 100ms = 3 seconds
+    DE	"   WELCOME TO    " ; 1
+MSGString3:
+    DE  30 ; * 100ms = 3 seconds
+    DE  "  DYSFUNCTIONAL  " ; 2
+MSGString4:
+    DE  30 ; * 100ms = 3 seconds
+    DE	"  TECHNOLOGIES   " ; 3
+MSGString5:
+    DE  30 ; * 100ms = 3 seconds
+    DE	"   PHILIPPINES   " ; 4
+MSGString6:
+    DE  30 ; * 100ms = 3 seconds
+    DE  "GOD BLESS AMERICA" ; 5
+    DE  0xFF ; end if string list
+;-------------------------------------------------------;
+    
 ;-------------------------------------------------------;
     END
 ;-------------------------------------------------------;

@@ -113,6 +113,10 @@ _CB_Next_Digit:
     CALL    _Next_Buffer_Line_Ptr
     SKPZ
     GOTO    _CB_Next_Line
+    ; clean up pointers so pointing at beginning of
+    ; buffer, not out in the weeds.
+    CLRF	Buffer_Line_Ptr
+    CLRF	Buffer_Digit_Ptr
     RETURN
 ;-------------------------------------------------------;
 
@@ -257,6 +261,11 @@ _CM_Next:
 ;-------------------------------------------------------;
 _Update_Matrix:
 ;-------------------------------------------------------;
+    MOVFW   Buffer_Digit_Ptr
+    MOVWF   Temp1
+    MOVFW   Buffer_Line_Ptr
+    MOVWF   Temp2
+    ;---------------------------------------------------;
     CALL    _Init_Matrix
     CLRF    Matrix_Line_Ptr
     ;---------------------------------------------------;
@@ -311,6 +320,12 @@ _UM_Next_Digit:
     CALL    _Next_Matrix_Line_Ptr
     SKPZ
     GOTO    _UM_Next_Line
+    ;---------------------------------------------------;
+    MOVFW   Temp2
+    MOVWF   Buffer_Line_Ptr
+    MOVFW   Temp1
+    MOVWF   Buffer_Digit_Ptr
+    ;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 

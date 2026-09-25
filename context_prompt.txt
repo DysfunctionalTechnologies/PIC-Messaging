@@ -1,0 +1,56 @@
+INFO_CENTER + GLOBE + PAROL/MESSAGING + 210 RECOVERY + PIC/gpasm
+Date lock: 25–26 Sep 2026. Tim Carlson, 67, San Miguel, Bulacan.
+Wife Ona, daughter Ria Faye. Inverted sleep (wake ~9–10:30pm Manila / 6am Cali, sleep ~1pm Manila / 10pm Cali). Manila = UTC+8.
+Do not grind past 11am–noon Manila. After-sunrise work is OK.
+Senior embedded partner. Direct. Whole MODULE.proc. No factory fluff.
+Hank only if Tim says paid. Compensation before more Hank work.FIRST LOGIN OF TIM’S MORNING: “Tim, please remember to take today’s medications.” Then work. He already knows the rest.WHO / HEALTH
+Four brainstem strokes at 48–49. Cognition intact. Right motor loss, left numbness, mild slur. Fine motor + balance worse with age. Disabled / retired.
+Hips ache after locked posture; sitting/moving + muscle relaxant helps.
+Career: GRiD → Agilis → Momenta → VLSI → Philips → Acoustic Technologies. Line diag, IC val, firmware, SWE.
+Yard: 3 lovebirds, ~15 ducks, ~30 chickens. Farmer/bugler ~6am when sun is up.
+GitHub org: DysfunctionalTechnologies. Never commit globe/secrets.py. MUSIC.py on CYD is a toy.FLEET
+210 RPi5-1 DEV — recovered. Boots 64GB SD (from 220). 2TB WD USB-boot rubble — DO NOT wipe, do not Imager/mkfs, lounge only. Rescue of Downloads/Engineering/.ssh on labeled 500GB offline.
+212 NANAY weather jig. 214 QUEENIE.
+217 PLANET — p85 fan installed (quiet), DS18B20 now 3-pin header not cable. Tested good.
+218 PRINCESS 3B+ spare printer-server later.
+220 GHIRLIE 3B+ — p85 in; leftover noise may be monitor fan (deferred).
+Office RING + 17-mod STICK share one IR receiver (wire to STICK RA3).
+MCLR programming cable: N.O. pushbutton in PICkit2 VPP/MCLR only. Hold during pk2cmd, release for IR. RA0/RA1 still ICSPDAT/CLK and matrix CLK/LOAD — if face dies with cable on, pull whole header. Never -A5.0 on the stick. Board power + pk2cmd -W.
+USBee ZX 08a9:0005 on 210 via sigrok fx2lafw / PulseView.
+Geany + gputils (gpasm/gplink) only. No MPLAB/XC8. Assembly-only (.ASM/.INC). Native gpasm — no --mpasm-compatible. Kill MPASM-only as found.
+pk2cmd minus: /home/tscarlson/pk2cmd/pk2cmd/pk2cmd
+Device PIC12F1840 ID 1B80 rev 0005. Config: CP_OFF CPD_OFF WRT_OFF.PIC-MESSAGING
+Path: /home/tscarlson/Engineering/PIC_programs/PIC-Messaging
+Repo: git@github.com:DysfunctionalTechnologies/PIC-Messaging.git
+main: 7fbd474 v1.00 mule; d09699c EEPROM diag; 0f5b99c linker + ASCII headers. Later local work may be unpushed.
+Product name PIC-Messaging (width can change). Office toy = clock+messaging later. Trinet carton = messaging only. Stick+Messaging never coexist. Parol+Messaging share POWER only. RING pairs with either stick flavor.Hardware stick: 17 MAX7219 modules (8x136). 680Ω + bulk on PIC VDD. 680Ω IR out to RA3 (isolate /MCLR). ICSP unplugged for IR.Linker: 12f1840_messaging.lkr — page0 0x000–0x7FF code, page1 0x800–0xFFF PROTECTED himem. SECTION CODE/PROG0=page0, PROG1=page1, DEEPROM=eedata. gplink -s ./12f1840_messaging.lkr. No 3FFF pad.EEPROM (internal 256B, 100k cycles)
+Slot = 18 bytes: [dwell][17 chars]. addr = slot*18.
+dwell 0xFF = empty/end. 0x00 = hold (later). 0x01–0xFE = 100ms units (later; ignore value now). Seed uses 30 (3s).
+14 slots max (252) + scratch. Diag byte address 0xFF (EE_TEST_ADDR), pattern 0x5A. Keys 20/24 still EE write/read diag until V1.01 (then EDIT / NEXT SLOT).
+Do not wear cells: commit whole string on SAVE, not per char.
+Invalid glyph → space on blit.
+Virgin/seed: slot0 first byte 0xFF → later seed from HIMEM.
+Read/write: BANKSEL MEMORY before MOVFW EE_Addr/EE_Data; SFRs are bank 3. Unlock 55/AA/WR atomic, GIE off. Read: CLRF EEDATL, RD, then EEDATL. Latch ≠ cell.
+gplink puts EE at hex byte 0x1E000 (:020000040001 + :10E00000, word-padded 1E 00 20 00…). pk2cmd -M does not treat that as EE (leaves FF). pk2cmd -ME on the SAME hex does. Do not use a second ee_seed.hex (deleted). Optional later: ORG __EEPROM_START (gpasm native) and/or remap to :0200000400F0.Build
+One script: PIC-Messaging/build_it.sh
+Default: gpasm -c all .ASM, gplink -s lkr, hold MCLR, pk2cmd -W -M (erase all + flash/config), -ME (EE from same hex), -GE 0-2F dump, -Y verify all, -I -R release.
+--noeeprom: -Z -M (preserve EE), still dump + -Y.
+No sudo. PK2=/home/tscarlson/pk2cmd/pk2cmd/pk2cmd
+-MP alone does not erase; 0→1 bits fail verify (seen at 0x0004). Use -Z -M or -M.
+HEX=PIC-Messaging.hexRemote map V1.00 locked (file Remote_Map_For_All_Projects.txt in repo).
+Power 3/4 global. Bright 1–2 RING, 7–8 stick. Office btn 6 RING/CLK/MSG cycle (toy only). Trinet Messaging ignores 6. Parol stand-in: 1 music OFF SLDB solid BLUE, 2 music ON SLDR solid RED, 3 OFF black, 4 ON restore RAM face, 5 diag Rockin’ USA. Auto-cycle off. Cold boot version until valid key. Dir Parol_Stand_In (from Clear Ring V1.32 gpasm). Do not flash household parols with V1.21 until sacrificial target.
+NEC repeat = last op (not coded). Office last-column mode dots later.MESSAGING CODE STATE (as of 26 Sep 04:35 Manila)
+Carousel target: EEPROM slots not HIMEM. Slot0 banner unique   EE  MSG V1.00 vs HIMEM MESSAGING V1.00.
+_EE_Print_Slot walks *18, skip dwell, 17× SET Buffer_Digit_Ptr then _Print_Char. Sanitize space–Z.
+_Update_Matrix LEFT_TO_RIGHT leaves Buffer_Digit_Ptr=16; save/restore ptrs or set column immediately before every _Print_Char. _Clear_Buffer must finish with ptrs at 0.
+_Update_Messaging: decrement 3s timer; on expire INCF slot, wrap >=6 to 0, reload timer, CALL _EE_Print_Slot, RETURN. No BRW table (GOTO is 2 words). No _Init_Display on live path. Init: CLRF Current_Display, CALL _EE_Print_Slot once.
+Last observed: solid X at column 0 after stub; EE dump good; cycle not signed off. Goal before commit: six EE strings cycle ~3s.OOTB copy is Trinet’s. Mule seed may become MALIGAYANG PASKO / BAGONG TAON! Version banner generated from VERSION_MAJOR/MINOR.PAROL / OTHER
+Washer: mice + snake skin, mains unplugged, junkshop. Karaoke-proofed bedroom; office headphones.
+p85 fans bag P85. AT24C08 untested. Zero 2W seller-limbo.
+Printer server parked (218/220). Epson K dead.
+LibreOffice Draw / draw.io if asked.DO NOT
+Hub on 210. Imager/mkfs on the 2TB. Mix office clock into product MESSAGING hex. Call Hank. Oil fetcher. Full-white 17-mod on cheap wart. GLOBE_HOSTS unless asked. Run Tim past 11am–noon. Install Microchip IDE on 210. Program golden chip. -A5.0 into the stick. Test IR with ICSP connected. Average indoor temps. Fetch-on-demand storms. sudo the build scripts. Separate ee_seed.hex. Wear EEPROM per-character. Flash household parol with untested V1.21.NOW
+Finish EEPROM carousel (no X stub). build_it.sh. Commit/push PIC-Messaging when six strings loop. Then Grok reads main for leftover MPASM/clock/BRW/_Init_Display/diag-at-addr-0.
+V1.01 later: tap pad, EDIT_FLAG, 20/24 remap, dwell byte wired to timer, MAX7219 shutdown on power, NEC repeat, himem CALLs, office btn 6.
+Stand-in ring stays locked as dummy parol.Open a new conversation, paste that, then: “We’re on PIC-Messaging, EEPROM slots 18 bytes, dump shows 1E + EE MSG, build_it.sh is the loader, X sat on column 0 — next is clean six-string cycle and commit.” I will pick up there.
+

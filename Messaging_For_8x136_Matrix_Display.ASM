@@ -28,119 +28,35 @@ MESSAGING_CODE CODE
 ;-------------------------------------------------------;
 _Update_Messaging:
 ;-------------------------------------------------------;
-; For Timing Each Display Mode
-;-------------------------------------------------------;
 _UC_Timers:
-    ;---------------------------------------------------;
+;-------------------------------------------------------;
     DECF    Display_Timer_LO, F
     MOVLW   H'FF'
     XORWF   Display_Timer_LO, W
     SKPZ
-    GOTO    _Update_Display
+    ;---------------------------------------------------;
+    RETURN
     ;---------------------------------------------------;
     DECF    Display_Timer_HI, F
     MOVLW   H'FF'
     XORWF   Display_Timer_HI, W
     SKPZ
-    GOTO    _Update_Display
     ;---------------------------------------------------;
-    INCF    Current_Display, F
-    BCF	    INIT_FLAG
-    MOVLW   MAX_DISPLAY
-    XORWF   Current_Display, W
-    SKPZ
-    GOTO    _UC_Next_Display
-    MOVLW   MIN_DISPLAY
-    MOVWF   Current_Display
-    ;---------------------------------------------------;
-_UC_Next_Display:
-    ;---------------------------------------------------;
-    MOVFW   Current_Display
-    ANDLW   DISPLAY_MASK
-    BRW
-    ;---------------------------------------------------;
-    GOTO    _UC_Version       ;  0
-    GOTO    _UC_Welcome_To    ;  1
-    GOTO    _UC_Dysfunctional ;  2
-    GOTO    _UC_Technologies  ;  3
-    GOTO    _UC_Philippines   ;  4
-    GOTO    _UC_God_Bless_USA ;  5
-    MOVLW   MIN_DISPLAY       ;  6
-    MOVLW   MIN_DISPLAY       ;  7
-    MOVLW   MIN_DISPLAY       ;  8
-    MOVLW   MIN_DISPLAY       ;  9
-    MOVLW   MIN_DISPLAY       ;  10
-    MOVLW   MIN_DISPLAY       ;  11
-    MOVLW   MIN_DISPLAY       ;  12
-    MOVLW   MIN_DISPLAY       ;  13
-    MOVLW   MIN_DISPLAY       ;  14
-    MOVLW   MIN_DISPLAY       ;  15
-    ;---------------------------------------------------;
-    MOVWF   Current_Display   ;
-    GOTO    _UC_Next_Display  ;
-    ;---------------------------------------------------;
-_UC_Version:
-    ;---------------------------------------------------;
-;    INCF    Current_Display, F
-    ;---------------------------------------------------;
-_UC_Welcome_To:
-_UC_Dysfunctional:
-_UC_Technologies:
-_UC_Philippines:
-_UC_God_Bless_USA:
-    ;---------------------------------------------------;
-;    MOVLW   HIGH TIMER_1SEC_RELOAD
-;    MOVWF   Display_Timer_HI
-;    MOVLW   LOW  TIMER_1SEC_RELOAD
-;    MOVWF   Display_Timer_LO
-    ;---------------------------------------------------;
-    CLRF    Display_Timer_HI
-    MOVLW   .200          ; ~1 s if T0 is 5 ms
-    MOVWF   Display_Timer_LO
-    ;---------------------------------------------------;
-    BSF		UPDATE_FLAG
-;    GOTO    _Update_Display
-;-------------------------------------------------------;
-_Update_Display:
-;-------------------------------------------------------;
-    BTFSS   UPDATE_FLAG
     RETURN
-    BCF	    UPDATE_FLAG
     ;---------------------------------------------------;
-    MOVLW   MAX_DISPLAY
-    XORWF   Current_Display, W
-    SKPZ
-    GOTO    _UD_Next_Display
+    ; expired
+    INCF    Current_Display, F
+    MOVLW   6
+    SUBWF   Current_Display, W
+    SKPNC
+    CLRF    Current_Display
+    MOVLW   HIGH TIMER_3SEC_RELOAD
+    MOVWF   Display_Timer_HI
+    MOVLW   LOW  TIMER_3SEC_RELOAD
+    MOVWF   Display_Timer_LO
+    CALL    _EE_Print_Slot
     ;---------------------------------------------------;
-    MOVLW   MIN_DISPLAY
-    MOVWF   Current_Display
-    ;---------------------------------------------------;
-_UD_Next_Display:
-    ;---------------------------------------------------;
-    MOVFW   Current_Display
-    ANDLW   DISPLAY_MASK
-    BRW
-    ;---------------------------------------------------;
-    GOTO    _Print_Version       ;  0
-    GOTO    _Print_Welcome_To    ;  1
-    GOTO    _Print_Dysfunctional ;  2
-    GOTO    _Print_Technologies  ;  3
-    GOTO    _Print_Philippines   ;  4
-    GOTO    _Print_God_Bless_USA ;  5
-    ;---------------------------------------------------;
-    MOVLW   MIN_DISPLAY          ;  6
-    MOVLW   MIN_DISPLAY          ;  7
-    MOVLW   MIN_DISPLAY          ;  8
-    MOVLW   MIN_DISPLAY          ;  9
-    MOVLW   MIN_DISPLAY          ;  10
-    MOVLW   MIN_DISPLAY          ;  11
-    MOVLW   MIN_DISPLAY          ;  12
-    MOVLW   MIN_DISPLAY          ;  13
-    MOVLW   MIN_DISPLAY          ;  14
-    MOVLW   MIN_DISPLAY          ;  15
-    ;---------------------------------------------------;
-    MOVLW   Current_Display      ; 
-    GOTO    _UD_Next_Display     ;
+    RETURN
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -281,11 +197,10 @@ _Initialize_Messaging_Subsystem:
     MOVWF   Update_Timer_HI
     MOVLW   LOW  TIMER_100MS_RELOAD
     MOVWF   Update_Timer_LO
-;    BCF	    UPDATE_FLAG
     ;---------------------------------------------------;
-    MOVLW   HIGH TIMER_2SEC_RELOAD
+    MOVLW   HIGH TIMER_5SEC_RELOAD
     MOVWF   Display_Timer_HI
-    MOVLW   LOW  TIMER_2SEC_RELOAD
+    MOVLW   LOW  TIMER_5SEC_RELOAD
     MOVWF   Display_Timer_LO
     CLRF    Current_Display
     ;---------------------------------------------------;
@@ -293,6 +208,11 @@ _Initialize_Messaging_Subsystem:
     ;---------------------------------------------------;
     CALL    _Clear_Buffer
     CALL    _Update_Matrix
+    ;---------------------------------------------------;
+    CLRF    Current_Display
+    BCF     EE_GLASS_FLAG
+    BSF     UPDATE_FLAG
+    CALL    _EE_Print_Slot
     ;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
