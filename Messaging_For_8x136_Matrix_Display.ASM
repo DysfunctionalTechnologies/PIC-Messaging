@@ -65,7 +65,7 @@ _UC_Timers:
     ; expired
     ;---------------------------------------------------;
     INCF    Current_Display, F
-    MOVLW   6
+    MOVLW   14
     SUBWF   Current_Display, W
     SKPNC
     CLRF    Current_Display

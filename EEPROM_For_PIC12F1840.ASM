@@ -54,6 +54,7 @@ _EE_Read_Byte:
     MOVFW   EEDATL
     BANKSEL MEMORY
     MOVWF   EE_Data
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 
@@ -81,12 +82,15 @@ _EE_Write_Byte:
     MOVLW   H'AA'
     MOVWF   EECON2
     BSF     EECON1, WR
+	;---------------------------------------------------;
 _EE_WR_Wait:
+	;---------------------------------------------------;
     BTFSC   EECON1, WR
     GOTO    _EE_WR_Wait
     BCF     EECON1, WREN
     BSF     INTCON, GIE
     BANKSEL MEMORY
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 
@@ -165,7 +169,7 @@ _EE_Print_Hex:
     SWAPF   EE_Data, W
     ANDLW   H'0F'
     CALL    _EE_Print_Nibble
-
+	;---------------------------------------------------;
     BANKSEL MEMORY
     SET_CURSOR_M 6
     MOVFW   EE_Data
@@ -188,13 +192,20 @@ _EE_Print_Nibble:
     GOTO    _EE_PN_Out       ; '0'-'9'
     MOVLW   7
     ADDWF   Temp2, F         ; ':'>'A' . . . '?'>'F'
+	;---------------------------------------------------;
 _EE_PN_Out:
+	;---------------------------------------------------;
     MOVFW   Temp2
     GOTO    _Print_Char
 ;-------------------------------------------------------;
 #ENDIF ; _EEPROM_DIAG_ENABLED_
 ;-------------------------------------------------------;
 
+;-------------------------------------------------------;
+_EEPS_Restart:
+;-------------------------------------------------------;
+    CLRF    Current_Display
+;    GOTO    _EE_Print_Slot
 ;-------------------------------------------------------;
 _EE_Print_Slot:
 ;-------------------------------------------------------;
@@ -226,6 +237,7 @@ _EE_Print_Slot:
     CLRF    Temp1             ; column 0..16
     ;---------------------------------------------------;
 _EEPS_Next:
+	;---------------------------------------------------;
     BANKSEL MEMORY
     MOVFW   Temp1
     MOVWF   Buffer_Digit_Ptr
@@ -241,14 +253,25 @@ _EEPS_Next:
     XORWF   Temp1, W
     SKPZ
     GOTO    _EEPS_Next
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
+
+;-------------------------------------------------------;
 _EEPS_Empty:
+;-------------------------------------------------------;
     MOVFW   Current_Display
-    SKPNZ
-    RETURN                    ; slot 0 empty: nothing to show
-    CLRF    Current_Display
-    GOTO    _EE_Print_Slot
+    SKPZ
+    GOTO    _EEPS_Restart
+    CALL    _Clear_Buffer
+    CALL    _Update_Matrix
+    MOVLW   30
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
+    MOVLW   0xFF
+    MOVWF   Current_Display     ; next expire INCF → slot 0 again
+	;---------------------------------------------------;
+    RETURN
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -264,11 +287,17 @@ _EE_Sanitize:
     SUBWF   Temp2, W
     SKPC
     GOTO    _EE_San_OK
+	;---------------------------------------------------;
 _EE_San_Space:
+	;---------------------------------------------------;
     MOVLW   A' '
+	;---------------------------------------------------;
     RETURN
+	;---------------------------------------------------;
 _EE_San_OK:
+	;---------------------------------------------------;
     MOVFW   Temp2
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 
@@ -283,7 +312,9 @@ _Load_Dwell_Timer:
     BANKSEL Display_Timer_LO
     CLRF    Display_Timer_LO
     CLRF    Display_Timer_HI
+	;---------------------------------------------------;
 _LDT_Loop:
+	;---------------------------------------------------;
     MOVLW   20                      ; 100ms / 5ms T0
     ADDWF   Display_Timer_LO, F
     SKPNC
@@ -291,6 +322,7 @@ _LDT_Loop:
     BANKSEL Dwell_Count
     DECFSZ  Dwell_Count, F
     GOTO    _LDT_Loop
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 
@@ -304,30 +336,37 @@ _Init_EEPROM_Subsystem:
     CLRF    EE_Data
     CLRF	Slot_Dwell
     BCF		EE_GLASS_FLAG
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
- org __EEPROM_START
+EEPROM_EEDATA org __EEPROM_START
 ;-------------------------------------------------------;
 ; First word = dwell (* 100ms). If 0xFF, end of strings
 ; Following words 1-17 - the actual string
 ;-------------------------------------------------------;
     ; String 1
-    DE  10 ; * 100ms = 3 seconds
+    DE  30 ; * 100ms = 3 seconds
     DE	"   WELCOME TO    " ; 1
     ; String 2
-    DE  20 ; * 100ms = 3 seconds
+    DE  30 ; * 100ms = 3 seconds
     DE  "  DYSFUNCTIONAL  " ; 2
     ; String 3
     DE  30 ; * 100ms = 3 seconds
     DE	"  TECHNOLOGIES   " ; 3
     ; String 4
-    DE  50 ; * 100ms = 3 seconds
+    DE  30 ; * 100ms = 3 seconds
     DE	"   PHILIPPINES   " ; 4
     ; String 5
-    DE  0  ; * 100ms = 3 seconds
+    DE  30  ; * 100ms = 3 seconds
     DE  "GOD BLESS AMERICA" ; 5
+    ; String 6
+    DE  0xFF  ; * 100ms = 3 seconds
+    DE  "  TEST STRING 6  " ; 6
+    ; String 7
+    DE  30  ; * 100ms = 3 seconds
+    DE  "  TEST STRING 7  " ; 7
     ; End of Carousel
     DE  0xFF ; end if string list
 ;-------------------------------------------------------;
