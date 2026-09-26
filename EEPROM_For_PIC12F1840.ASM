@@ -27,6 +27,7 @@ EEPROM_DATA UDATA
 EE_Addr     res 1
 EE_Data     res 1
 Slot_Dwell  res 1
+Dwell_Count res 1
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -213,8 +214,10 @@ _EE_Print_Slot:
     ADDWF   EE_Addr, F        ; *18
     ;---------------------------------------------------;
     CALL    _EE_Read_Byte     ; dwell
-    BANKSEL MEMORY
+    BANKSEL EE_Data
     MOVFW   EE_Data
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
     XORLW   H'FF'
     SKPNZ
     GOTO    _EEPS_Empty
@@ -275,9 +278,19 @@ _Load_Dwell_Timer:
     BANKSEL Slot_Dwell
     MOVFW   Slot_Dwell
     SKPNZ
-    MOVLW   30              ; 0x00 → 3s for now
-    ; W = 1..254 hundredths
-    ; Display_Timer = W * TICKS_100MS
+    MOVLW   30
+    MOVWF   Dwell_Count
+    BANKSEL Display_Timer_LO
+    CLRF    Display_Timer_LO
+    CLRF    Display_Timer_HI
+_LDT_Loop:
+    MOVLW   20                      ; 100ms / 5ms T0
+    ADDWF   Display_Timer_LO, F
+    SKPNC
+    INCF    Display_Timer_HI, F
+    BANKSEL Dwell_Count
+    DECFSZ  Dwell_Count, F
+    GOTO    _LDT_Loop
     RETURN
 ;-------------------------------------------------------;
 
@@ -301,19 +314,19 @@ _Init_EEPROM_Subsystem:
 ; Following words 1-17 - the actual string
 ;-------------------------------------------------------;
     ; String 1
-    DE  30 ; * 100ms = 3 seconds
+    DE  10 ; * 100ms = 3 seconds
     DE	"   WELCOME TO    " ; 1
     ; String 2
-    DE  30 ; * 100ms = 3 seconds
+    DE  20 ; * 100ms = 3 seconds
     DE  "  DYSFUNCTIONAL  " ; 2
     ; String 3
     DE  30 ; * 100ms = 3 seconds
     DE	"  TECHNOLOGIES   " ; 3
     ; String 4
-    DE  30 ; * 100ms = 3 seconds
+    DE  50 ; * 100ms = 3 seconds
     DE	"   PHILIPPINES   " ; 4
     ; String 5
-    DE  30 ; * 100ms = 3 seconds
+    DE  0  ; * 100ms = 3 seconds
     DE  "GOD BLESS AMERICA" ; 5
     ; End of Carousel
     DE  0xFF ; end if string list

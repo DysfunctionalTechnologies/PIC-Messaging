@@ -63,16 +63,14 @@ _UC_Timers:
     RETURN
     ;---------------------------------------------------;
     ; expired
+    ;---------------------------------------------------;
     INCF    Current_Display, F
     MOVLW   6
     SUBWF   Current_Display, W
     SKPNC
     CLRF    Current_Display
-    MOVLW   HIGH TIMER_3SEC_RELOAD
-    MOVWF   Display_Timer_HI
-    MOVLW   LOW  TIMER_3SEC_RELOAD
-    MOVWF   Display_Timer_LO
     CALL    _EE_Print_Slot
+    CALL    _Load_Dwell_Timer
     ;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
@@ -223,6 +221,10 @@ _Init_Messaging_Subsystem:
     MOVWF	Current_Display
     BCF     EE_GLASS_FLAG
     CALL    _Print_Version_String
+    MOVLW   30
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
+    CALL    _Load_Dwell_Timer
     ;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
