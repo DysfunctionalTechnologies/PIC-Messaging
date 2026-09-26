@@ -22,6 +22,14 @@
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
+EEPROM_DATA UDATA
+;-------------------------------------------------------;
+EE_Addr     res 1
+EE_Data     res 1
+Slot_Dwell  res 1
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
 EEPROM_CODE CODE
 ;-------------------------------------------------------;
 
@@ -81,6 +89,8 @@ _EE_WR_Wait:
     RETURN
 ;-------------------------------------------------------;
 
+;-------------------------------------------------------;
+#IF _EEPROM_DIAG_ENABLED_
 ;-------------------------------------------------------;
 _EE_Diag_Write:
 ;-------------------------------------------------------;
@@ -181,18 +191,15 @@ _EE_PN_Out:
     MOVFW   Temp2
     GOTO    _Print_Char
 ;-------------------------------------------------------;
-    
+#ENDIF ; _EEPROM_DIAG_ENABLED_
+;-------------------------------------------------------;
+
 ;-------------------------------------------------------;
 _EE_Print_Slot:
 ;-------------------------------------------------------;
 ; Current_Display = slot 0..13
 ; Slot = [dwell][17 chars]. Dwell 0xFF = empty / end.
 ;-------------------------------------------------------;
-;	BANKSEL MEMORY
-;	CLRF	Buffer_Digit_Ptr
-;    MOVLW	A'X'
-;    CALL	_Print_Char
-;    RETURN
     BANKSEL MEMORY
     MOVFW   Current_Display
     MOVWF   EE_Addr           ; *1
@@ -263,13 +270,26 @@ _EE_San_OK:
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-_Initialize_EEPROM_Subsystem:
+_Load_Dwell_Timer:
+;-------------------------------------------------------;
+    BANKSEL Slot_Dwell
+    MOVFW   Slot_Dwell
+    SKPNZ
+    MOVLW   30              ; 0x00 → 3s for now
+    ; W = 1..254 hundredths
+    ; Display_Timer = W * TICKS_100MS
+    RETURN
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
+_Init_EEPROM_Subsystem:
 ;-------------------------------------------------------;
     ; Initialize Variables
     ;---------------------------------------------------;
     BANKSEL MEMORY
     CLRF    EE_Addr
     CLRF    EE_Data
+    CLRF	Slot_Dwell
     BCF		EE_GLASS_FLAG
     RETURN
 ;-------------------------------------------------------;
@@ -280,24 +300,22 @@ _Initialize_EEPROM_Subsystem:
 ; First word = dwell (* 100ms). If 0xFF, end of strings
 ; Following words 1-17 - the actual string
 ;-------------------------------------------------------;
-MSGString1:
-    DE  30 ; * 100ms = 3 seconds
-    DE  "  EE  MSG V",(VERSION_MAJOR & H'0F') + '0', ".", ((VERSION_MINOR & H'F0') >> 4) + '0', (VERSION_MINOR & H'0F') + '0', "  " ; 0
-MSGString2:
+    ; String 1
     DE  30 ; * 100ms = 3 seconds
     DE	"   WELCOME TO    " ; 1
-MSGString3:
+    ; String 2
     DE  30 ; * 100ms = 3 seconds
     DE  "  DYSFUNCTIONAL  " ; 2
-MSGString4:
+    ; String 3
     DE  30 ; * 100ms = 3 seconds
     DE	"  TECHNOLOGIES   " ; 3
-MSGString5:
+    ; String 4
     DE  30 ; * 100ms = 3 seconds
     DE	"   PHILIPPINES   " ; 4
-MSGString6:
+    ; String 5
     DE  30 ; * 100ms = 3 seconds
     DE  "GOD BLESS AMERICA" ; 5
+    ; End of Carousel
     DE  0xFF ; end if string list
 ;-------------------------------------------------------;
     

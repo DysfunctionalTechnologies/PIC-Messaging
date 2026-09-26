@@ -33,41 +33,59 @@
 ;-------------------------------------------------------;
 #IFDEF _FONT.ASM_
 ;-------------------------------------------------------;
+	; Global Data
+	;---------------------------------------------------;
+	GLOBAL Font_Ptr_HI
+	GLOBAL Font_Ptr_LO
+	GLOBAL Font_Line_Ptr
+	GLOBAL Char_To_Find
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_Font_Subsystem
+    GLOBAL _Init_Font_Subsystem
     ;---------------------------------------------------;
-    GLOBAL  _Reset_Font
+    GLOBAL _Reset_Font
     ;---------------------------------------------------;
-    GLOBAL  _Reset_Font_Ptr
-    GLOBAL  _Set_Font_Ptr
-    GLOBAL  _Set_Font_Line_Ptr
+    GLOBAL _Reset_Font_Ptr
+    GLOBAL _Set_Font_Ptr
+    GLOBAL _Set_Font_Line_Ptr
     ;---------------------------------------------------;
-    GLOBAL  _Next_Font_Char
-    GLOBAL  _Next_Font_Line
-    GLOBAL  _Set_Font_Line
+    GLOBAL _Next_Font_Char
+    GLOBAL _Next_Font_Line
+    GLOBAL _Set_Font_Line
     ;---------------------------------------------------;
-    GLOBAL  _Get_Data_From_Font
-    GLOBAL  _Find_Char_In_Font
+    GLOBAL _Get_Data_From_Font
+    GLOBAL _Find_Char_In_Font
 ;-------------------------------------------------------;
 #ELSE ; !_FONT.ASM_
 ;-------------------------------------------------------;
+	; External Data
+	;---------------------------------------------------;
+	EXTERN Font_Ptr_HI
+	EXTERN Font_Ptr_LO
+	EXTERN Font_Line_Ptr
+	EXTERN Char_To_Find
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_Font_Subsystem
+    EXTERN _Init_Font_Subsystem
     ;---------------------------------------------------;
-    EXTERN  _Reset_Font
+    EXTERN _Reset_Font
     ;---------------------------------------------------;
-    EXTERN  _Reset_Font_Ptr
-    EXTERN  _Set_Font_Ptr
-    EXTERN  _Set_Font_Line_Ptr
+    EXTERN _Reset_Font_Ptr
+    EXTERN _Set_Font_Ptr
+    EXTERN _Set_Font_Line_Ptr
     ;---------------------------------------------------;
-    EXTERN  _Next_Font_Char
-    EXTERN  _Next_Font_Line
-    EXTERN  _Set_Font_Line
+    EXTERN _Next_Font_Char
+    EXTERN _Next_Font_Line
+    EXTERN _Set_Font_Line
     ;---------------------------------------------------;
-    EXTERN  _Get_Data_From_Font
-    EXTERN  _Find_Char_In_Font
+    EXTERN _Get_Data_From_Font
+    EXTERN _Find_Char_In_Font
 ;-------------------------------------------------------;
 #ENDIF ; !_FONT.ASM_
 ;-------------------------------------------------------;

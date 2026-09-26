@@ -22,89 +22,12 @@
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
- UDATA H'0020'
-;-------------------------------------------------------;
-; MAIN UDATA
+MAIN_DATA         UDATA ; H'0020'
 ;-------------------------------------------------------;
 SYSTEM_Flags1     res 1
 SYSTEM_Flags2     res 1
 Temp1             res 1
 Temp2             res 1
-;-------------------------------------------------------;
-; Clock_For_8x136_Matrix_Display
-;-------------------------------------------------------;
-Char_To_Print     res 1
-Current_Display   res 1
-Saved_Display     res 1
-Update_Timer_HI   res 1
-Update_Timer_LO   res 1
-Colon_Timer_HI    res 1
-Colon_Timer_LO    res 1
-Display_Timer_HI  res 1
-Display_Timer_LO  res 1
-Saved_Seconds     res 1
-DOW_CharPtr       res 1
-CLOCK_Flags1      res 1
-CLOCK_Flags2      res 1
-;-------------------------------------------------------;
-; Font
-;-------------------------------------------------------;
-Font_Ptr_HI       res 1
-Font_Ptr_LO       res 1
-Font_Line_Ptr     res 1
-Char_To_Find      res 1
-;-------------------------------------------------------;
-; I2C
-;-------------------------------------------------------;
-I2C_Addr          res 1
-I2C_Data          res 1
-I2C_Byte          res 1
-I2C_BitCount      res 1
-I2C_ByteCount     res 1
-I2C_SavedCount    res 1
-I2C_Flags         res 1
-;-------------------------------------------------------;
-; IR_For_PIC12F1840
-;-------------------------------------------------------;
-IR_Status         res 1
-IR_Mfg_Code       res 1
-IR_Dev_Code       res 1
-IR_Op_Code        res 1
-IR_Code_0         res 1
-IR_Code_1         res 1
-IR_Code_2         res 1
-IR_Code_3         res 1
-IR_Code_Bit_Count res 1
-;-------------------------------------------------------;
-; MAX_7219
-;-------------------------------------------------------;
-Temp_Data        res 1
-Char2Print       res 1
-BitCount         res 1
-    ;---------------------------------------------------;
-Command_HI       res 1
-Command_LO       res 1
-    ;---------------------------------------------------;
-Intensity        res 1
-    ;---------------------------------------------------;
-Matrix_Line_Ptr  res 1
-Matrix_Digit_Ptr res 1
-Buffer_Line_Ptr  res 1
-Buffer_Digit_Ptr res 1
-;-------------------------------------------------------;
-; Messaging_For_8x136_Matrix_Display
-;-------------------------------------------------------;
-Messaging_Flags  res 1
-;-------------------------------------------------------;
-; EEPROM_For_PIC12F1840
-;-------------------------------------------------------;
-EE_Addr          res 1
-EE_Data          res 1
-;-------------------------------------------------------;
-; Timer_2_For_PIC12F1840
-;-------------------------------------------------------;
-Timer_2_Overflow res 1
-TMR2O            res 1
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -146,7 +69,7 @@ _IV_Entry:
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-MAIN_CODE CODE H'0020'
+MAIN_CODE CODE ; H'0020'
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -160,21 +83,16 @@ _Main:
     CALL    _Process_Remote_Code
     ;---------------------------------------------------;
 #ENDIF ; _IR_ENABLED_    
+    ;---------------------------------------------------;
     BTFSS   TIMER_0_INT_FLAG
     GOTO    _Main
     BCF     TIMER_0_INT_FLAG
-    BTFSC   EE_GLASS_FLAG
-    GOTO    _Main              ; leave EE text alone
+    ;---------------------------------------------------;
+    BTFSS   EE_GLASS_FLAG
+    ;---------------------------------------------------;
     CALL    _Update_Messaging
+    ;---------------------------------------------------;
     GOTO    _Main
-;    ;---------------------------------------------------;
-;    BTFSS   TIMER_0_INT_FLAG
-;    GOTO    _Main
-;    BCF	    TIMER_0_INT_FLAG
-;    ;---------------------------------------------------;
-;    CALL    _Update_Messaging
-;    ;---------------------------------------------------;
-;    GOTO    _Main
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -191,24 +109,28 @@ _Initialize_System:
     ;---------------------------------------------------;
     ; Initialize Hardware Subsystems
     ;---------------------------------------------------;
-    CALL    _Initialize_Microcontroller
+    CALL    _Init_Microcontroller
     ;---------------------------------------------------;
-    CALL    _Initialize_EEPROM_Subsystem
-    CALL    _Initialize_Timer_0_Subsystem
-    CALL    _Initialize_MAX7219_Subsystem
+    PAGESEL _Init_Himem_Subsystem
+    CALL	_Init_Himem_Subsystem
+    PAGESEL $
     ;---------------------------------------------------;
-    CALL    _Initialize_I2C_Subsystem
+    CALL    _Init_EEPROM_Subsystem
+    CALL    _Init_Timer_0_Subsystem
+    CALL    _Init_MAX7219_Subsystem
+    CALL    _Init_Font_Subsystem
+    ;---------------------------------------------------;
+    CALL    _Init_I2C_Subsystem
     ;---------------------------------------------------;
 #IF _IR_ENABLED_    
     ;---------------------------------------------------;
-    CALL    _Initialize_Timer_2_Subsystem
-    CALL    _Initialize_IR_Subsystem
-    CALL    _Initialize_Remote_Subsystem
+    CALL    _Init_Timer_2_Subsystem
+    CALL    _Init_IR_Subsystem
+    CALL    _Init_Remote_Subsystem
     ;---------------------------------------------------;
 #ENDIF ; _IR_ENABLED_    
     ;---------------------------------------------------;
-    CALL    _Initialize_Font_Subsystem
-    CALL    _Initialize_Messaging_Subsystem
+    CALL    _Init_Messaging_Subsystem
     ;---------------------------------------------------;
 
     ;---------------------------------------------------;

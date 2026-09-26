@@ -38,25 +38,45 @@
 ;-------------------------------------------------------;
 #IFDEF _EEPROM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
+    ; Global Data
+    ;---------------------------------------------------;
+	GLOBAL EE_Addr
+	GLOBAL EE_Data
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_EEPROM_Subsystem
-    GLOBAL  _EE_Read_Byte
-    GLOBAL  _EE_Write_Byte
-    GLOBAL  _EE_Diag_Write
-    GLOBAL  _EE_Diag_Read
-    GLOBAL	_EE_Print_Slot
+    GLOBAL _Init_EEPROM_Subsystem
+    ;---------------------------------------------------;
+    GLOBAL _EE_Read_Byte
+    GLOBAL _EE_Write_Byte
+#IF _EEPROM_DIAG_ENABLED_
+    GLOBAL _EE_Diag_Write
+    GLOBAL _EE_Diag_Read
+#ENDIF ; _EEPROM_DIAG_ENABLED_
+    GLOBAL _EE_Print_Slot
 ;-------------------------------------------------------;
 #ELSE ; !_EEPROM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
+    ; External Data
+    ;---------------------------------------------------;
+	EXTERN EE_Addr
+	EXTERN EE_Data
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_EEPROM_Subsystem
-    EXTERN  _EE_Read_Byte
-    EXTERN  _EE_Write_Byte
-    EXTERN  _EE_Diag_Write
-    EXTERN  _EE_Diag_Read
-    EXTERN	_EE_Print_Slot
+    EXTERN _Init_EEPROM_Subsystem
+    ;---------------------------------------------------;
+    EXTERN _EE_Read_Byte
+    EXTERN _EE_Write_Byte
+#IF _EEPROM_DIAG_ENABLED_
+    EXTERN _EE_Diag_Write
+    EXTERN _EE_Diag_Read
+#ENDIF ; _EEPROM_DIAG_ENABLED_
+    EXTERN _EE_Print_Slot
 ;-------------------------------------------------------;
 #ENDIF ; !_EEPROM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;

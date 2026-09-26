@@ -53,15 +53,19 @@
 ;-------------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _String_Table
-    GLOBAL  _Font_Table
+    GLOBAL _Init_Himem_Subsystem
+    ;---------------------------------------------------;
+    GLOBAL _Version_String
+    GLOBAL _Font_Table
 ;-------------------------------------------------------;
 #ELSE ; !_HIMEM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _String_Table
-    EXTERN  _Font_Table
+    EXTERN _Init_Himem_Subsystem
+    ;---------------------------------------------------;
+    EXTERN _Version_String
+    EXTERN _Font_Table
 ;-------------------------------------------------------;
 #ENDIF ; !_HIMEM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;

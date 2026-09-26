@@ -58,7 +58,7 @@
 ;-------------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_Timer_0_Subsystem
+    GLOBAL  _Init_Timer_0_Subsystem
     ;---------------------------------------------------;
     GLOBAL  _Timer_0_INT_Handler
     GLOBAL  _Wait_For_Timer_0_INT_Flag
@@ -67,7 +67,7 @@
 ;-------------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_Timer_0_Subsystem
+    EXTERN  _Init_Timer_0_Subsystem
     ;---------------------------------------------------;
     EXTERN  _Timer_0_INT_Handler
     EXTERN  _Wait_For_Timer_0_INT_Flag

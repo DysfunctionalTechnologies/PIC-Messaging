@@ -291,7 +291,9 @@ _Remote_Code_00_EF_13: ; ROW 5, BUTTON 4 (20)
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
+#IF _EEPROM_DIAG_ENABLED_
     CALL    _EE_Diag_Write
+#ENDIF ; _EEPROM_DIAG_ENABLED_
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -332,7 +334,9 @@ _Remote_Code_00_EF_17: ; ROW 6, BUTTON 4 (24)
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
+#IF _EEPROM_DIAG_ENABLED_
     CALL    _EE_Diag_Read
+#ENDIF ; _EEPROM_DIAG_ENABLED_
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -342,7 +346,7 @@ _Remote_Code_Done:
 ;-------------------------------------------------------;
     BCF	    IR_CODE_VALID_FLAG
 ;-------------------------------------------------------;
-_Initialize_Remote_Subsystem:
+_Init_Remote_Subsystem:
 ;-------------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;

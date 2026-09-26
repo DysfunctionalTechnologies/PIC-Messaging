@@ -155,17 +155,17 @@
 ;-------------------------------------------------------;
 #IFDEF _PIC12F1840.ASM_
 ;-------------------------------------------------------;
-    GLOBAL  _Initialize_Microcontroller
-    GLOBAL  _Initialize_Oscillator
-    GLOBAL  _Initialize_Miscellaneous
-    GLOBAL  _Initialize_Ports
+    GLOBAL _Init_Microcontroller
+    GLOBAL _Init_Oscillator
+    GLOBAL _Init_Miscellaneous
+    GLOBAL _Init_Ports
 ;-------------------------------------------------------;
 #ELSE ; !_PIC12F1840.ASM_
 ;-------------------------------------------------------;
-    EXTERN  _Initialize_Microcontroller
-    EXTERN  _Initialize_Oscillator
-    EXTERN  _Initialize_Miscellaneous
-    EXTERN  _Initialize_Ports
+    EXTERN _Init_Microcontroller
+    EXTERN _Init_Oscillator
+    EXTERN _Init_Miscellaneous
+    EXTERN _Init_Ports
 ;-------------------------------------------------------;
 #ENDIF ; !_PIC12F1840.ASM_
 ;-------------------------------------------------------;

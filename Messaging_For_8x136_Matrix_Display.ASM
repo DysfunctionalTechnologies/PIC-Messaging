@@ -22,7 +22,25 @@
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-MESSAGING_CODE CODE
+MESSAGING_DATA   UDATA
+;-------------------------------------------------------;
+Char_To_Print    res 1
+Current_Display  res 1
+Saved_Display    res 1
+Update_Timer_HI  res 1
+Update_Timer_LO  res 1
+Colon_Timer_HI   res 1
+Colon_Timer_LO   res 1
+Display_Timer_HI res 1
+Display_Timer_LO res 1
+Saved_Seconds    res 1
+DOW_CharPtr      res 1
+CLOCK_Flags1     res 1
+CLOCK_Flags2     res 1
+Messaging_Flags  res 1
+This_Digit       res 1
+;-------------------------------------------------------;
+MESSAGING_CODE   CODE
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -60,6 +78,45 @@ _UC_Timers:
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
+_Print_Version_String:
+;-------------------------------------------------------;
+    CALL    _Clear_Buffer
+    ;---------------------------------------------------;
+    BANKSEL This_Digit
+    CLRF    This_Digit
+    ;---------------------------------------------------;
+_PVS_Loop:
+    ;---------------------------------------------------;
+    MOVFW   This_Digit
+    MOVWF   Buffer_Digit_Ptr
+    ;---------------------------------------------------;
+    MOVFW	This_Digit
+    MOVWF   FSR1L
+    ;---------------------------------------------------;
+    MOVLW   HIGH _Version_String
+    IORLW   H'80'
+    MOVWF   FSR1H
+    ;---------------------------------------------------;
+    MOVLW   LOW  _Version_String
+    ADDWF   FSR1L, F
+    SKPNC
+    INCF    FSR1H, F
+    ;---------------------------------------------------;
+    MOVFW   INDF1
+    ;---------------------------------------------------;
+    CALL    _Print_Char
+    ;---------------------------------------------------;
+    INCF    This_Digit, F
+    ;---------------------------------------------------;
+    MOVLW   MAX_DIGITS
+    XORWF   This_Digit, W
+    SKPZ
+    GOTO    _PVS_Loop
+    ;---------------------------------------------------;
+    GOTO    _Update_Matrix
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
 #IFDEF _CODE_TO_DELETE_LATER_
 ;-------------------------------------------------------;
 _Init_Display:
@@ -75,17 +132,6 @@ _Init_Display:
     MOVWF   Saved_Display
     ;---------------------------------------------------;
     RETURN
-;-------------------------------------------------------;
-
-;-------------------------------------------------------;
-_Print_Version:
-;-------------------------------------------------------;
-    CALL    _Init_Display
-    ;---------------------------------------------------;
-    MOVLW   VERSION_STRING_PTR
-    CALL    _Print_Linear_Buffer_String
-    ;---------------------------------------------------;
-    GOTO    _Update_Matrix
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -142,51 +188,11 @@ _Print_Philippines:
     ;---------------------------------------------------;
     GOTO    _Update_Matrix
 ;-------------------------------------------------------;
-
-;-------------------------------------------------------;
-_Print_Linear_Buffer_String:
-;-------------------------------------------------------;
-; W = Offset Into String Array in Linear Memory         ;
-;-------------------------------------------------------;
-    MOVWF   Temp1
-    CLRF    Temp2
-    ;---------------------------------------------------;
-_PLBS_Loop:
-    ;---------------------------------------------------;
-    MOVFW   Temp2
-    MOVWF   Buffer_Digit_Ptr
-    ;---------------------------------------------------;
-    MOVFW   Temp1
-    MOVWF   FSR1L
-    ;---------------------------------------------------;
-    MOVLW   HIGH _String_Table
-    IORLW   H'80'
-    MOVWF   FSR1H
-    ;---------------------------------------------------;
-    MOVLW   LOW  _String_Table
-    ADDWF   FSR1L, F
-    SKPNC
-    INCF    FSR1H, F
-    ;---------------------------------------------------;
-    MOVFW   INDF1
-    ;---------------------------------------------------;
-    CALL    _Print_Char
-    ;---------------------------------------------------;
-    INCF    Temp1, F
-    INCF    Temp2, F
-    ;---------------------------------------------------;
-    MOVLW   MAX_DIGITS
-    XORWF   Temp2, W
-    SKPZ
-    GOTO    _PLBS_Loop
-    ;---------------------------------------------------;
-    RETURN
-;-------------------------------------------------------;
 #ENDIF
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-_Initialize_Messaging_Subsystem:
+_Init_Messaging_Subsystem:
 ;-------------------------------------------------------;
     BANKSEL MEMORY
     ;---------------------------------------------------;
@@ -202,9 +208,9 @@ _Initialize_Messaging_Subsystem:
     MOVLW   LOW  TIMER_100MS_RELOAD
     MOVWF   Update_Timer_LO
     ;---------------------------------------------------;
-    MOVLW   HIGH TIMER_5SEC_RELOAD
+    MOVLW   HIGH TIMER_3SEC_RELOAD
     MOVWF   Display_Timer_HI
-    MOVLW   LOW  TIMER_5SEC_RELOAD
+    MOVLW   LOW  TIMER_3SEC_RELOAD
     MOVWF   Display_Timer_LO
     CLRF    Current_Display
     ;---------------------------------------------------;
@@ -213,9 +219,10 @@ _Initialize_Messaging_Subsystem:
     CALL    _Clear_Buffer
     CALL    _Update_Matrix
     ;---------------------------------------------------;
-    CLRF    Current_Display
+    MOVLW	H'FF'
+    MOVWF	Current_Display
     BCF     EE_GLASS_FLAG
-    CALL    _EE_Print_Slot
+    CALL    _Print_Version_String
     ;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;

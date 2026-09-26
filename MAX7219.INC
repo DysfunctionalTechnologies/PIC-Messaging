@@ -92,71 +92,101 @@
 ;-------------------------------------------------------;
 #IFDEF _MAX7219.ASM_
 ;-------------------------------------------------------;
+	; Global Data
+	;---------------------------------------------------;
+	GLOBAL Temp_Data
+	GLOBAL Char2Print
+	GLOBAL BitCount
+	GLOBAL Command_HI
+	GLOBAL Command_LO
+	GLOBAL Intensity
+	GLOBAL Matrix_Line_Ptr
+	GLOBAL Matrix_Digit_Ptr
+	GLOBAL Buffer_Line_Ptr
+	GLOBAL Buffer_Digit_Ptr
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_MAX7219_Subsystem
+    GLOBAL _Init_MAX7219_Subsystem
     ;---------------------------------------------------;
     ; Buffer Routines
     ;---------------------------------------------------;
-    GLOBAL  _Clear_Buffer
-    GLOBAL  _Write_Buffer
-    GLOBAL  _Read_Buffer
-    GLOBAL  _Clear_Char
-    GLOBAL  _Print_Numeric
-    GLOBAL  _Print_Char
-    GLOBAL  _Overlay_Char
-    GLOBAL  _Remove_Char
-    GLOBAL  _Prev_Buffer_Line_Ptr
-    GLOBAL  _Next_Buffer_Line_Ptr
-    GLOBAL  _Prev_Buffer_Digit_Ptr
-    GLOBAL  _Next_Buffer_Digit_Ptr
+    GLOBAL _Clear_Buffer
+    GLOBAL _Write_Buffer
+    GLOBAL _Read_Buffer
+    GLOBAL _Clear_Char
+    GLOBAL _Print_Numeric
+    GLOBAL _Print_Char
+    GLOBAL _Overlay_Char
+    GLOBAL _Remove_Char
+    GLOBAL _Prev_Buffer_Line_Ptr
+    GLOBAL _Next_Buffer_Line_Ptr
+    GLOBAL _Prev_Buffer_Digit_Ptr
+    GLOBAL _Next_Buffer_Digit_Ptr
     ;---------------------------------------------------;
     ; Matrix Routines
     ;---------------------------------------------------;
-    GLOBAL  _Init_Matrix
-    GLOBAL  _Clear_Matrix
-    GLOBAL  _Update_Matrix
-    GLOBAL  _Set_Intensity_MIN
-    GLOBAL  _Set_Intensity_MAX
-    GLOBAL  _Set_Intensity_New
-    GLOBAL  _Set_Intensity
-    GLOBAL  _Inc_Intensity
-    GLOBAL  _Dec_Intensity
-    GLOBAL  _Get_Intensity
+    GLOBAL _Init_Matrix
+    GLOBAL _Clear_Matrix
+    GLOBAL _Update_Matrix
+    GLOBAL _Set_Intensity_MIN
+    GLOBAL _Set_Intensity_MAX
+    GLOBAL _Set_Intensity_New
+    GLOBAL _Set_Intensity
+    GLOBAL _Inc_Intensity
+    GLOBAL _Dec_Intensity
+    GLOBAL _Get_Intensity
 ;-------------------------------------------------------;
 #ELSE ; !_MAX7219.ASM_
 ;-------------------------------------------------------;
+	; External Data
+	;---------------------------------------------------;
+	EXTERN Temp_Data
+	EXTERN Char2Print
+	EXTERN BitCount
+	EXTERN Command_HI
+	EXTERN Command_LO
+	EXTERN Intensity
+	EXTERN Matrix_Line_Ptr
+	EXTERN Matrix_Digit_Ptr
+	EXTERN Buffer_Line_Ptr
+	EXTERN Buffer_Digit_Ptr
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_MAX7219_Subsystem
+    EXTERN _Init_MAX7219_Subsystem
     ;---------------------------------------------------;
     ; Buffer Routines
     ;---------------------------------------------------;
-    EXTERN  _Clear_Buffer
-    EXTERN  _Write_Buffer
-    EXTERN  _Read_Buffer
-    EXTERN  _Clear_Char
-    EXTERN  _Print_Numeric
-    EXTERN  _Print_Char
-    EXTERN  _Overlay_Char
-    EXTERN  _Remove_Char
-    EXTERN  _Prev_Buffer_Line_Ptr
-    EXTERN  _Next_Buffer_Line_Ptr
-    EXTERN  _Prev_Buffer_Digit_Ptr
-    EXTERN  _Next_Buffer_Digit_Ptr
+    EXTERN _Clear_Buffer
+    EXTERN _Write_Buffer
+    EXTERN _Read_Buffer
+    EXTERN _Clear_Char
+    EXTERN _Print_Numeric
+    EXTERN _Print_Char
+    EXTERN _Overlay_Char
+    EXTERN _Remove_Char
+    EXTERN _Prev_Buffer_Line_Ptr
+    EXTERN _Next_Buffer_Line_Ptr
+    EXTERN _Prev_Buffer_Digit_Ptr
+    EXTERN _Next_Buffer_Digit_Ptr
     ;---------------------------------------------------;
     ; Matrix Routines
     ;---------------------------------------------------;
-    EXTERN  _Init_Matrix
-    EXTERN  _Clear_Matrix
-    EXTERN  _Update_Matrix
-    EXTERN  _Set_Intensity_MIN
-    EXTERN  _Set_Intensity_MAX
-    EXTERN  _Set_Intensity_New
-    EXTERN  _Set_Intensity
-    EXTERN  _Inc_Intensity
-    EXTERN  _Dec_Intensity
-    EXTERN  _Get_Intensity
+    EXTERN _Init_Matrix
+    EXTERN _Clear_Matrix
+    EXTERN _Update_Matrix
+    EXTERN _Set_Intensity_MIN
+    EXTERN _Set_Intensity_MAX
+    EXTERN _Set_Intensity_New
+    EXTERN _Set_Intensity
+    EXTERN _Inc_Intensity
+    EXTERN _Dec_Intensity
+    EXTERN _Get_Intensity
 ;-------------------------------------------------------;
 #ENDIF ; !_MAX7219.ASM_
 ;-------------------------------------------------------;

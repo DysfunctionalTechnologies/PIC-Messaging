@@ -61,19 +61,57 @@ PRINT_CHAR_M MACRO character
 ;-------------------------------------------------------;
 #IFDEF _MESSAGING.ASM_
 ;-------------------------------------------------------;
+	; Global Data
+	;---------------------------------------------------;
+	GLOBAL Char_To_Print
+	GLOBAL Current_Display
+	GLOBAL Saved_Display
+	GLOBAL Update_Timer_HI
+	GLOBAL Update_Timer_LO
+	GLOBAL Colon_Timer_HI
+	GLOBAL Colon_Timer_LO
+	GLOBAL Display_Timer_HI
+	GLOBAL Display_Timer_LO
+	GLOBAL Saved_Seconds
+	GLOBAL DOW_CharPtr
+	GLOBAL CLOCK_Flags1
+	GLOBAL CLOCK_Flags2
+	GLOBAL Messaging_Flags
+    ;---------------------------------------------------;
+
+	;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_Messaging_Subsystem
+    GLOBAL _Init_Messaging_Subsystem
     ;---------------------------------------------------;
-    GLOBAL  _Update_Messaging
+    GLOBAL _Update_Messaging
 ;-------------------------------------------------------;
 #ELSE ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;
+	; External Data
+	;---------------------------------------------------;
+	EXTERN Char_To_Print
+	EXTERN Current_Display
+	EXTERN Saved_Display
+	EXTERN Update_Timer_HI
+	EXTERN Update_Timer_LO
+	EXTERN Colon_Timer_HI
+	EXTERN Colon_Timer_LO
+	EXTERN Display_Timer_HI
+	EXTERN Display_Timer_LO
+	EXTERN Saved_Seconds
+	EXTERN DOW_CharPtr
+	EXTERN CLOCK_Flags1
+	EXTERN CLOCK_Flags2
+	EXTERN Messaging_Flags
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_Messaging_Subsystem
+    EXTERN _Init_Messaging_Subsystem
     ;---------------------------------------------------;
-    EXTERN  _Update_Messaging
+    EXTERN _Update_Messaging
 ;-------------------------------------------------------;
 #ENDIF ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;

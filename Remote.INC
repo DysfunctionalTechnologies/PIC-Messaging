@@ -37,17 +37,17 @@
 ;-------------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_Remote_Subsystem
+    GLOBAL _Init_Remote_Subsystem
     ;---------------------------------------------------;
-    GLOBAL  _Process_Remote_Code
+    GLOBAL _Process_Remote_Code
 ;-------------------------------------------------------;
 #ELSE ; !_REMOTE.ASM_
 ;-------------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_Remote_Subsystem
+    EXTERN _Init_Remote_Subsystem
     ;---------------------------------------------------;
-    EXTERN  _Process_Remote_Code
+    EXTERN _Process_Remote_Code
 ;-------------------------------------------------------;
 #ENDIF ; !_REMOTE.ASM_
 ;-------------------------------------------------------;

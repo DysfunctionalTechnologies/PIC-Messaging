@@ -41,17 +41,45 @@
 ;-------------------------------------------------------;
 #IFDEF _IR_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
+	; Global Data
+	;---------------------------------------------------;
+	GLOBAL IR_Status
+	GLOBAL IR_Mfg_Code
+	GLOBAL IR_Dev_Code
+	GLOBAL IR_Op_Code
+	GLOBAL IR_Code_0
+	GLOBAL IR_Code_1
+	GLOBAL IR_Code_2
+	GLOBAL IR_Code_3
+	GLOBAL IR_Code_Bit_Count
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL _Initialize_IR_Subsystem
+    GLOBAL _Init_IR_Subsystem
     ;---------------------------------------------------;
     GLOBAL _IR_INT_Handler
 ;-------------------------------------------------------;
 #ELSE ; !_IR_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
+	; External Data
+	;---------------------------------------------------;
+	EXTERN IR_Status
+	EXTERN IR_Mfg_Code
+	EXTERN IR_Dev_Code
+	EXTERN IR_Op_Code
+	EXTERN IR_Code_0
+	EXTERN IR_Code_1
+	EXTERN IR_Code_2
+	EXTERN IR_Code_3
+	EXTERN IR_Code_Bit_Count
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN _Initialize_IR_Subsystem
+    EXTERN _Init_IR_Subsystem
     ;---------------------------------------------------;
     EXTERN _IR_INT_Handler
 ;-------------------------------------------------------;

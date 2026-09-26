@@ -39,45 +39,69 @@
 ;-------------------------------------------------------;
 #IFDEF _I2C.ASM_
 ;-------------------------------------------------------;
+	; Global Data
+	;---------------------------------------------------;
+	GLOBAL I2C_Addr
+	GLOBAL I2C_Data
+	GLOBAL I2C_Byte
+	GLOBAL I2C_BitCount
+	GLOBAL I2C_ByteCount
+	GLOBAL I2C_SavedCount
+	GLOBAL I2C_Flags
+	;---------------------------------------------------;
+
+	;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL  _Initialize_I2C_Subsystem
+    GLOBAL _Init_I2C_Subsystem
     ;---------------------------------------------------;
-    GLOBAL  _I2C_Set_Device_Address
-    GLOBAL  _I2C_Set_Transfer_Size
+    GLOBAL _I2C_Set_Device_Address
+    GLOBAL _I2C_Set_Transfer_Size
     ;---------------------------------------------------;
-    GLOBAL  _I2C_Start_Write
-    GLOBAL  _I2C_Write_Bits
-    GLOBAL  _I2C_Write_Byte
-    GLOBAL  _I2C_Write_Bytes
+    GLOBAL _I2C_Start_Write
+    GLOBAL _I2C_Write_Bits
+    GLOBAL _I2C_Write_Byte
+    GLOBAL _I2C_Write_Bytes
     ;---------------------------------------------------;
-    GLOBAL  _I2C_Start_Read
-    GLOBAL  _I2C_Read_Bits
-    GLOBAL  _I2C_Read_Bytes
+    GLOBAL _I2C_Start_Read
+    GLOBAL _I2C_Read_Bits
+    GLOBAL _I2C_Read_Bytes
     ;---------------------------------------------------;
-    GLOBAL  _I2C_Start
-    GLOBAL  _I2C_Stop
+    GLOBAL _I2C_Start
+    GLOBAL _I2C_Stop
 ;-------------------------------------------------------;
 #ELSE ; !_I2C.ASM_
 ;-------------------------------------------------------;
+	; External Data
+	;---------------------------------------------------;
+	EXTERN I2C_Addr
+	EXTERN I2C_Data
+	EXTERN I2C_Byte
+	EXTERN I2C_BitCount
+	EXTERN I2C_ByteCount
+	EXTERN I2C_SavedCount
+	EXTERN I2C_Flags
+	;---------------------------------------------------;
+
+	;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN  _Initialize_I2C_Subsystem
+    EXTERN _Init_I2C_Subsystem
     ;---------------------------------------------------;
-    EXTERN  _I2C_Set_Device_Address
-    EXTERN  _I2C_Set_Transfer_Size
+    EXTERN _I2C_Set_Device_Address
+    EXTERN _I2C_Set_Transfer_Size
     ;---------------------------------------------------;
-    EXTERN  _I2C_Start_Write
-    EXTERN  _I2C_Write_Bits
-    EXTERN  _I2C_Write_Byte
-    EXTERN  _I2C_Write_Bytes
+    EXTERN _I2C_Start_Write
+    EXTERN _I2C_Write_Bits
+    EXTERN _I2C_Write_Byte
+    EXTERN _I2C_Write_Bytes
     ;---------------------------------------------------;
-    EXTERN  _I2C_Start_Read
-    EXTERN  _I2C_Read_Bits
-    EXTERN  _I2C_Read_Bytes
+    EXTERN _I2C_Start_Read
+    EXTERN _I2C_Read_Bits
+    EXTERN _I2C_Read_Bytes
     ;---------------------------------------------------;
-    EXTERN  _I2C_Start
-    EXTERN  _I2C_Stop
+    EXTERN _I2C_Start
+    EXTERN _I2C_Stop
 ;-------------------------------------------------------;
 #ENDIF ; !_I2C.ASM_
 ;-------------------------------------------------------;
