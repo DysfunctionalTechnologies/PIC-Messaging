@@ -46,8 +46,9 @@ MESSAGING_CODE   CODE
 ;-------------------------------------------------------;
 _Update_Messaging:
 ;-------------------------------------------------------;
-_UC_Timers:
-;-------------------------------------------------------;
+    BTFSS	MSGS_ENABLED_FLAG
+    RETURN
+    ;---------------------------------------------------;
     DECF    Display_Timer_LO, F
     MOVLW   H'FF'
     XORWF   Display_Timer_LO, W
@@ -112,6 +113,27 @@ _PVS_Loop:
     GOTO    _PVS_Loop
     ;---------------------------------------------------;
     GOTO    _Update_Matrix
+;-------------------------------------------------------;
+
+;-------------------------------------------------------;
+_Load_Msg_On_Flag:
+;-------------------------------------------------------;
+; EE 0xFE → RAM MSG_ON_FLAG.
+; 0x00 = muted. 0x01 or virgin 0xFF = enabled.
+;-------------------------------------------------------;
+    BANKSEL MEMORY
+    MOVLW   EE_FLAGS
+    MOVWF   EE_Addr
+    CALL    _EE_Read_Byte
+    BANKSEL MEMORY
+    MOVFW   EE_Data
+    SKPNZ
+    GOTO    _LM_Muted
+    BSF     MSG_ON_FLAG
+    RETURN
+_LM_Muted:
+    BCF     MSG_ON_FLAG
+    RETURN
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;

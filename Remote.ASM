@@ -146,11 +146,36 @@ _Remote_Code_00_EF_04: ; ROW 2, BUTTON 1
 ;-------------------------------------------------------;
 _Remote_Code_00_EF_05: ; ROW 2, BUTTON 2
 ;-------------------------------------------------------;
-; UNUSED
+; MESSAGES ENABLED/DISABLED
 ;-------------------------------------------------------;
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
+    TOGGLE_MSGS_ENABLED_FLAG_M
+    ; pack RAM bit 3 into EE_FLAGS byte and write 0xFE
+    BANKSEL Messaging_Flags
+    MOVFW   Messaging_Flags
+    ANDLW   MSGS_ENABLED_BYTE      ; 0x08 or 0x00
+    SKPZ
+    MOVLW   1                      ; EE bit 0 = 1
+    BANKSEL EE_Data
+    MOVWF   EE_Data
+    MOVLW   EE_FLAGS
+    MOVWF   EE_Addr
+    CALL    _EE_Write_Byte
+    ;---------------------------------------------------;
+    BTFSC   MSGS_ENABLED_FLAG
+    GOTO    _R05_Enable
+    CALL    _Clear_Buffer
+    CALL    _Update_Matrix
+    GOTO    _Remote_Code_Done
+    ;---------------------------------------------------;
+_R05_Enable:
+    ;---------------------------------------------------;
+    MOVLW   0xFF
+    MOVWF   Current_Display
+    CALL    _EE_Print_Slot         ; or let next expire do it
+    CALL    _Load_Dwell_Timer
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
