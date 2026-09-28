@@ -23,30 +23,43 @@
 ;-------------------------------------------------------;
 ; Defines
 ;-------------------------------------------------------;
-#DEFINE MAX_DISPLAY          6
-#DEFINE MIN_DISPLAY          1
-#DEFINE DISPLAY_MASK         H'0F'
+NUM_MATRIX_MODULES     EQU 17
     ;---------------------------------------------------;
-#DEFINE TIMER_100MS_RELOAD     20 ; * 5ms = 100ms
-#DEFINE TIMER_250MS_RELOAD     50 ; * 5ms = 250ms
-#DEFINE TIMER_1SEC_RELOAD     200 ; * 5ms =   1S
-#DEFINE TIMER_2SEC_RELOAD     400 ; * 5ms =   2S
-#DEFINE TIMER_3SEC_RELOAD     600 ; * 5ms =   2S
-#DEFINE TIMER_4SEC_RELOAD     800 ; * 5ms =   2S
-#DEFINE TIMER_5SEC_RELOAD    1000 ; * 5ms =   5S
-#DEFINE TIMER_10SEC_RELOAD   2000 ; * 5ms =  15S
-#DEFINE TIMER_15SEC_RELOAD   3000 ; * 5ms =  15S
+TIMER_100MS_RELOAD     EQU 20   ; * 5ms = 100ms
+TIMER_250MS_RELOAD     EQU 50   ; * 5ms = 250ms
+TIMER_1SEC_RELOAD      EQU 200  ; * 5ms =   1S
+TIMER_2SEC_RELOAD      EQU 400  ; * 5ms =   2S
+TIMER_3SEC_RELOAD      EQU 600  ; * 5ms =   3S
+TIMER_4SEC_RELOAD      EQU 800  ; * 5ms =   4S
+TIMER_5SEC_RELOAD      EQU 1000 ; * 5ms =   5S
+TIMER_10SEC_RELOAD     EQU 2000 ; * 5ms =  10S
+TIMER_15SEC_RELOAD     EQU 3000 ; * 5ms =  15S
     ;---------------------------------------------------;
-#DEFINE INIT_FLAG_BIT        0
-#DEFINE INIT_FLAG            Messaging_Flags, INIT_FLAG_BIT
-#DEFINE UPDATE_FLAG_BIT      1
-#DEFINE UPDATE_FLAG          Messaging_Flags, UPDATE_FLAG_BIT
-
+INIT_FLAG_BYTE         EQU H'01'
+INIT_FLAG_BIT          EQU 0
+#DEFINE INIT_FLAG          Messaging_Flags, INIT_FLAG_BIT
+	;---------------------------------------------------;
+UPDATE_FLAG_BYTE       EQU H'02'
+UPDATE_FLAG_BIT        EQU 1
+#DEFINE UPDATE_FLAG        Messaging_Flags, UPDATE_FLAG_BIT
+	;---------------------------------------------------;
+EE_GLASS_BYTE          EQU H'04'
+EE_GLASS_BIT           EQU 2
+#DEFINE EE_GLASS_FLAG      Messaging_Flags, EE_GLASS_BIT
+	;---------------------------------------------------;
+MSGS_ENABLED_BYTE      EQU H'08'
+MSGS_ENABLED_BIT       EQU 3
+#DEFINE MSGS_ENABLED_FLAG Messaging_Flags, MSGS_ENABLED_BIT
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
 ; Macros
 ;-------------------------------------------------------;
+TOGGLE_MSGS_ENABLED_FLAG_M MACRO
+    MOVLW   MSGS_ENABLED_BYTE
+    XORWF   Messaging_Flags, F
+    ENDM
+    ;---------------------------------------------------;
 SET_CURSOR_M MACRO position
     MOVLW   position
     MOVWF   Buffer_Digit_Ptr
@@ -85,6 +98,8 @@ PRINT_CHAR_M MACRO character
     GLOBAL _Init_Messaging_Subsystem
     ;---------------------------------------------------;
     GLOBAL _Update_Messaging
+    GLOBAL _Load_Msg_On_Flag
+    GLOBAL _Toggle_Msg_On
 ;-------------------------------------------------------;
 #ELSE ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;
@@ -112,6 +127,8 @@ PRINT_CHAR_M MACRO character
     EXTERN _Init_Messaging_Subsystem
     ;---------------------------------------------------;
     EXTERN _Update_Messaging
+    EXTERN _Load_Msg_On_Flag
+    EXTERN _Toggle_Msg_On
 ;-------------------------------------------------------;
 #ENDIF ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;

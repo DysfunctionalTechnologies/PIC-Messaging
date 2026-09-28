@@ -23,11 +23,10 @@
 ;-------------------------------------------------------;
 ; Defines
 ;-------------------------------------------------------;
-#DEFINE EE_TEST_ADDR    H'FF'
-#DEFINE EE_TEST_PATTERN H'5A'
-
-#DEFINE EE_GLASS_BIT    2
-#DEFINE EE_GLASS_FLAG   Messaging_Flags, EE_GLASS_BIT
+EE_TEST_ADDR      EQU H'FF'
+EE_TEST_PATTERN   EQU H'5A'
+EE_FLAGS          EQU H'FE'
+EE_FLAG_MSG_ON    EQU 0
 ;-------------------------------------------------------;
     
 ;-------------------------------------------------------;

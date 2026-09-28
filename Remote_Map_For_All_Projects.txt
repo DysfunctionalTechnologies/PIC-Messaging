@@ -9,7 +9,7 @@ First row:    PAROL          RING                 STICK          RING           
 
 Second row:
 - Button  5 - diagnostic     RED                  reset          [ignore]             [ignore]                            [ignore]
-- Button  6 - [ignore]       GREEN                [ignore]       [ignore]             RING/CLK/MSG select                 [ignore]
+- Button  6 - [ignore]       GREEN                [ignore]       [ignore]             RING/CLK/MSG select                 MSG ENABLE/DISABLE
 - Button  7 - [ignore]       BLUE                 [ignore]       [ignore]             STICK bright UP                     STICK bright UP
 - Button  8 - [ignore]       WHITE                [ignore]       [ignore]             STICK bright DOWN                   STICK bright DOWN
 
