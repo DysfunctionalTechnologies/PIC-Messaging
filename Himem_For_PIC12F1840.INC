@@ -55,7 +55,8 @@
     ;---------------------------------------------------;
     GLOBAL _Init_Himem_Subsystem
     ;---------------------------------------------------;
-    GLOBAL _Version_String
+    GLOBAL _Str_Msgs_Disabled
+    GLOBAL _Str_Version
     GLOBAL _Font_Table
 ;-------------------------------------------------------;
 #ELSE ; !_HIMEM_FOR_PIC12F1840.ASM_
@@ -64,7 +65,8 @@
     ;---------------------------------------------------;
     EXTERN _Init_Himem_Subsystem
     ;---------------------------------------------------;
-    EXTERN _Version_String
+    EXTERN _Str_Msgs_Disabled
+    EXTERN _Str_Version
     EXTERN _Font_Table
 ;-------------------------------------------------------;
 #ENDIF ; !_HIMEM_FOR_PIC12F1840.ASM_

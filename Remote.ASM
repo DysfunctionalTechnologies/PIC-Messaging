@@ -127,10 +127,23 @@ _Remote_Code_00_EF_03: ; ROW 1, BUTTON 4
 ;-------------------------------------------------------;
     BTFSC   POWER_FLAG
     GOTO    _Remote_Code_Done
-    ;---------------------------------------------------;
-    BSF	    POWER_FLAG
-    CALL	_Update_Matrix
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
+    BSF     POWER_FLAG
+    BTFSC   MSGS_ENABLED_FLAG
+    GOTO    _R03_Live
+    CALL    _Print_Msgs_Disabled
+    MOVLW   H'FE'
+    MOVWF   Current_Display
+    MOVLW   10
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
+    CALL    _Load_Dwell_Timer
+    GOTO    _Remote_Code_Done
+	;---------------------------------------------------;
+_R03_Live:
+	;---------------------------------------------------;
+    CALL    _Update_Matrix
+	;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
 _Remote_Code_00_EF_04: ; ROW 2, BUTTON 1
@@ -166,14 +179,18 @@ _Remote_Code_00_EF_05: ; ROW 2, BUTTON 2
     ;---------------------------------------------------;
     BTFSC   MSGS_ENABLED_FLAG
     GOTO    _R05_Enable
-    CALL    _Clear_Buffer
-    CALL    _Update_Matrix
+    CALL    _Print_Msgs_Disabled
+    MOVLW   H'FE'
+    MOVWF   Current_Display
+    MOVLW   10
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
+    CALL    _Load_Dwell_Timer
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
 _R05_Enable:
     ;---------------------------------------------------;
-    MOVLW   0xFF
-    MOVWF   Current_Display
+    CLRF    Current_Display
     CALL    _EE_Print_Slot         ; or let next expire do it
     CALL    _Load_Dwell_Timer
     ;---------------------------------------------------;

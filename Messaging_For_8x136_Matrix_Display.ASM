@@ -46,25 +46,59 @@ MESSAGING_CODE   CODE
 ;-------------------------------------------------------;
 _Update_Messaging:
 ;-------------------------------------------------------;
-    BTFSS	MSGS_ENABLED_FLAG
-    RETURN
-    ;---------------------------------------------------;
+    BANKSEL MEMORY
+    BTFSC   MSGS_ENABLED_FLAG
+    GOTO    _UC_Timers
     DECF    Display_Timer_LO, F
     MOVLW   H'FF'
     XORWF   Display_Timer_LO, W
     SKPZ
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
     RETURN
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
     DECF    Display_Timer_HI, F
     MOVLW   H'FF'
     XORWF   Display_Timer_HI, W
     SKPZ
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
     RETURN
-    ;---------------------------------------------------;
-    ; expired
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
+    MOVFW   Current_Display
+    XORLW   H'FF'
+    SKPNZ
+    GOTO    _UM_Muted_Banner
+    CALL    _Clear_Buffer
+    CALL    _Update_Matrix
+    MOVLW   H'FF'
+    MOVWF   Display_Timer_LO
+    MOVWF   Display_Timer_HI
+	;---------------------------------------------------;
+    RETURN
+	;---------------------------------------------------;
+_UM_Muted_Banner:
+	;---------------------------------------------------;
+    CALL    _Print_Msgs_Disabled
+    MOVLW   H'FE'
+    MOVWF   Current_Display
+    MOVLW   10
+    BANKSEL Slot_Dwell
+    MOVWF   Slot_Dwell
+    CALL    _Load_Dwell_Timer
+	;---------------------------------------------------;
+    RETURN
+	;---------------------------------------------------;
+_UC_Timers:
+	;---------------------------------------------------;
+    DECF    Display_Timer_LO, F
+    MOVLW   H'FF'
+    XORWF   Display_Timer_LO, W
+    SKPZ
+    RETURN
+    DECF    Display_Timer_HI, F
+    MOVLW   H'FF'
+    XORWF   Display_Timer_HI, W
+    SKPZ
+    RETURN
     INCF    Current_Display, F
     MOVLW   14
     SUBWF   Current_Display, W
@@ -72,10 +106,40 @@ _Update_Messaging:
     CLRF    Current_Display
     CALL    _EE_Print_Slot
     CALL    _Load_Dwell_Timer
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
     RETURN
 ;-------------------------------------------------------;
-
+    
+;-------------------------------------------------------;
+_Print_Msgs_Disabled:
+;-------------------------------------------------------;
+    CALL    _Clear_Buffer
+    BANKSEL This_Digit
+    CLRF    This_Digit
+	;---------------------------------------------------;
+_PMD_Loop:
+	;---------------------------------------------------;
+    MOVFW   This_Digit
+    MOVWF   Buffer_Digit_Ptr
+    MOVFW   This_Digit
+    MOVWF   FSR1L
+    MOVLW   HIGH _Str_Msgs_Disabled
+    IORLW   H'80'
+    MOVWF   FSR1H
+    MOVLW   LOW  _Str_Msgs_Disabled
+    ADDWF   FSR1L, F
+    SKPNC
+    INCF    FSR1H, F
+    MOVFW   INDF1
+    CALL    _Print_Char
+    INCF    This_Digit, F
+    MOVLW   MAX_DIGITS
+    XORWF   This_Digit, W
+    SKPZ
+    GOTO    _PMD_Loop
+    GOTO    _Update_Matrix
+;-------------------------------------------------------;
+    
 ;-------------------------------------------------------;
 _Print_Version_String:
 ;-------------------------------------------------------;
@@ -92,11 +156,11 @@ _PVS_Loop:
     MOVFW	This_Digit
     MOVWF   FSR1L
     ;---------------------------------------------------;
-    MOVLW   HIGH _Version_String
+    MOVLW   HIGH _Str_Version
     IORLW   H'80'
     MOVWF   FSR1H
     ;---------------------------------------------------;
-    MOVLW   LOW  _Version_String
+    MOVLW   LOW  _Str_Version
     ADDWF   FSR1L, F
     SKPNC
     INCF    FSR1H, F
@@ -116,10 +180,10 @@ _PVS_Loop:
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-_Load_Msg_On_Flag:
+_Load_Msgs_Enabled_Flag:
 ;-------------------------------------------------------;
-; EE 0xFE → RAM MSG_ON_FLAG.
-; 0x00 = muted. 0x01 or virgin 0xFF = enabled.
+; EE 0xFE → RAM MSGS_ENABLED_FLAG
+; 0x00 muted. 0x01 or virgin 0xFF enabled.
 ;-------------------------------------------------------;
     BANKSEL MEMORY
     MOVLW   EE_FLAGS
@@ -129,10 +193,10 @@ _Load_Msg_On_Flag:
     MOVFW   EE_Data
     SKPNZ
     GOTO    _LM_Muted
-    BSF     MSG_ON_FLAG
+    BSF     MSGS_ENABLED_FLAG
     RETURN
 _LM_Muted:
-    BCF     MSG_ON_FLAG
+    BCF     MSGS_ENABLED_FLAG
     RETURN
 ;-------------------------------------------------------;
 
@@ -216,6 +280,7 @@ _Init_Messaging_Subsystem:
 ;-------------------------------------------------------;
     BANKSEL MEMORY
     ;---------------------------------------------------;
+    CALL    _Load_Msgs_Enabled_Flag
     CLRF    CLOCK_Flags1
     CLRF    CLOCK_Flags2
     ;---------------------------------------------------;

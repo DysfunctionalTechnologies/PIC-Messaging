@@ -369,6 +369,8 @@ EEPROM_EEDATA org __EEPROM_START
     DE  "  TEST STRING 7  " ; 7
     ; End of Carousel
     DE  0xFF ; end if string list
+    org     __EEPROM_START + EE_FLAGS
+    DE  0x01    
 ;-------------------------------------------------------;
     
 ;-------------------------------------------------------;

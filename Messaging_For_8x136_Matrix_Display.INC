@@ -98,8 +98,8 @@ PRINT_CHAR_M MACRO character
     GLOBAL _Init_Messaging_Subsystem
     ;---------------------------------------------------;
     GLOBAL _Update_Messaging
-    GLOBAL _Load_Msg_On_Flag
-    GLOBAL _Toggle_Msg_On
+    GLOBAL _Load_Msgs_Enabled_Flag
+    GLOBAL _Print_Msgs_Disabled
 ;-------------------------------------------------------;
 #ELSE ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;
@@ -127,8 +127,8 @@ PRINT_CHAR_M MACRO character
     EXTERN _Init_Messaging_Subsystem
     ;---------------------------------------------------;
     EXTERN _Update_Messaging
-    EXTERN _Load_Msg_On_Flag
-    EXTERN _Toggle_Msg_On
+    EXTERN _Load_Msgs_Enabled_Flag
+    EXTERN _Print_Msgs_Disabled
 ;-------------------------------------------------------;
 #ENDIF ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;
