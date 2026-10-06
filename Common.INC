@@ -24,18 +24,14 @@
 ;-------------------------------------------------------;
 ; Firmware Version Numbers
 ;-------------------------------------------------------;
-#DEFINE	VERSION_MAJOR            H'01'
-#DEFINE	VERSION_MINOR            H'00'
+#DEFINE	VERSION_MAJOR               H'01'
+#DEFINE	VERSION_MINOR               H'01'
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
 ; Build Flags
 ;-------------------------------------------------------;
-#DEFINE _LEFT_TO_RIGHT_          TRUE
-    ;---------------------------------------------------;
-#DEFINE _IR_ENABLED_             TRUE
-	;---------------------------------------------------;
-#DEFINE _EEPROM_DIAG_ENABLED_    FALSE
+#DEFINE _LEFT_TO_RIGHT_             TRUE
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -43,25 +39,25 @@
 ;-------------------------------------------------------;
     ; SYSTEM_Flags1 Bits
     ;---------------------------------------------------;
-#DEFINE TIMER_0_INT_BYTE         H'01'
-#DEFINE TIMER_0_INT_BIT          0
-#DEFINE	TIMER_0_INT_FLAG         SYSTEM_Flags1, TIMER_0_INT_BIT
+#DEFINE TIMER_0_INT_BYTE            H'01'
+#DEFINE TIMER_0_INT_BIT             0
+#DEFINE	TIMER_0_INT_FLAG            SYSTEM_Flags1, TIMER_0_INT_BIT
     ;---------------------------------------------------;
-#DEFINE TIMER_1_INT_BYTE         H'02'
-#DEFINE TIMER_1_INT_BIT          1
-#DEFINE	TIMER_1_INT_FLAG         SYSTEM_Flags1, TIMER_1_INT_BIT
+#DEFINE TIMER_1_INT_BYTE            H'02'
+#DEFINE TIMER_1_INT_BIT             1
+#DEFINE	TIMER_1_INT_FLAG            SYSTEM_Flags1, TIMER_1_INT_BIT
     ;---------------------------------------------------;
-#DEFINE TIMER_2_INT_BYTE         H'04'
-#DEFINE TIMER_2_INT_BIT          2
-#DEFINE TIMER_2_INT_FLAG         SYSTEM_Flags1, TIMER_2_INT_BIT
+#DEFINE TIMER_2_INT_BYTE            H'04'
+#DEFINE TIMER_2_INT_BIT             2
+#DEFINE TIMER_2_INT_FLAG            SYSTEM_Flags1, TIMER_2_INT_BIT
     ;---------------------------------------------------;
-#DEFINE SAVED_GIE_BYTE           H'08'
-#DEFINE SAVED_GIE_BIT            3
-#DEFINE SAVED_GIE_FLAG           SYSTEM_Flags1, SAVED_GIE_BIT
+#DEFINE SAVED_GIE_BYTE              H'08'
+#DEFINE SAVED_GIE_BIT               3
+#DEFINE SAVED_GIE_FLAG              SYSTEM_Flags1, SAVED_GIE_BIT
     ;---------------------------------------------------;
-#DEFINE POWER_BYTE               H'10'
-#DEFINE POWER_BIT                4
-#DEFINE	POWER_FLAG               SYSTEM_Flags1, POWER_BIT
+#DEFINE POWER_BYTE                  H'10'
+#DEFINE POWER_BIT                   4
+#DEFINE	POWER_FLAG                  SYSTEM_Flags1, POWER_BIT
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -134,17 +130,12 @@ CRASH_AND_BURN_M MACRO
     ;---------------------------------------------------;
 #INCLUDE Timer_0_For_PIC12F1840.INC
 #INCLUDE MAX7219.INC
-    ;---------------------------------------------------;
-#INCLUDE I2C.INC
-    ;---------------------------------------------------;
-#IF _IR_ENABLED_    
-    ;---------------------------------------------------;
+	;---------------------------------------------------;
 #INCLUDE Timer_2_For_PIC12F1840.INC
 #INCLUDE IR_For_PIC12F1840.INC
 #INCLUDE Remote.INC
     ;---------------------------------------------------;
-#ENDIF ; _IR_ENABLED_    
-    ;---------------------------------------------------;
 #INCLUDE Font.INC
+#INCLUDE Carousel.INC
 #INCLUDE Messaging_For_8x136_Matrix_Display.INC
 ;-------------------------------------------------------;

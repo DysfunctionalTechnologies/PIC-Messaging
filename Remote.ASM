@@ -22,10 +22,6 @@
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-#IF _IR_ENABLED_
-;-------------------------------------------------------;
-
-;-------------------------------------------------------;
 REMOTE_CODE CODE
 ;-------------------------------------------------------;
 
@@ -129,8 +125,17 @@ _Remote_Code_00_EF_03: ; ROW 1, BUTTON 4
     GOTO    _Remote_Code_Done
 	;---------------------------------------------------;
     BSF     POWER_FLAG
-    BTFSC   MSGS_ENABLED_FLAG
-    GOTO    _R03_Live
+    BTFSS   MSGS_ENABLED_FLAG
+    GOTO    _R03_Muted
+    BANKSEL MEMORY
+    CLRF    Current_Display
+    CLRF    Saved_Display
+    CALL    _EE_Print_Slot
+    CALL    _Load_Dwell_Timer
+    GOTO    _Remote_Code_Done
+    ;---------------------------------------------------;
+_R03_Muted:
+    ;---------------------------------------------------;
     CALL    _Print_Msgs_Disabled
     MOVLW   H'FE'
     MOVWF   Current_Display
@@ -138,12 +143,7 @@ _Remote_Code_00_EF_03: ; ROW 1, BUTTON 4
     BANKSEL Slot_Dwell
     MOVWF   Slot_Dwell
     CALL    _Load_Dwell_Timer
-    GOTO    _Remote_Code_Done
-	;---------------------------------------------------;
-_R03_Live:
-	;---------------------------------------------------;
-    CALL    _Update_Matrix
-	;---------------------------------------------------;
+    ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
 _Remote_Code_00_EF_04: ; ROW 2, BUTTON 1
@@ -179,6 +179,7 @@ _Remote_Code_00_EF_05: ; ROW 2, BUTTON 2
     ;---------------------------------------------------;
     BTFSC   MSGS_ENABLED_FLAG
     GOTO    _R05_Enable
+    BANKSEL MEMORY
     CALL    _Print_Msgs_Disabled
     MOVLW   H'FE'
     MOVWF   Current_Display
@@ -253,6 +254,9 @@ _Remote_Code_00_EF_0B: ; ROW 3, BUTTON 4
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
+    BTFSS   EDIT_FLAG
+    GOTO    _Remote_Code_Done
+    CALL    _Edit_Yes
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -293,6 +297,8 @@ _Remote_Code_00_EF_0F: ; ROW 4, BUTTON 4
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
+    BTFSC	EDIT_FLAG
+    CALL	_Edit_No
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -328,14 +334,19 @@ _Remote_Code_00_EF_12: ; ROW 5, BUTTON 3
 ;-------------------------------------------------------;
 _Remote_Code_00_EF_13: ; ROW 5, BUTTON 4 (20)
 ;-------------------------------------------------------;
-; EEPROM Write
+; Edit Enter
 ;-------------------------------------------------------;
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
-#IF _EEPROM_DIAG_ENABLED_
-    CALL    _EE_Diag_Write
-#ENDIF ; _EEPROM_DIAG_ENABLED_
+    BTFSC   EDIT_FLAG
+    GOTO    _R13_Exit
+    CALL    _Edit_Enter
+    GOTO    _Remote_Code_Done
+_R13_Exit:
+    CALL    _Edit_Exit
+    CALL    _EE_Print_Slot
+    CALL    _Load_Dwell_Timer
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -371,14 +382,13 @@ _Remote_Code_00_EF_16: ; ROW 6, BUTTON 3 (23)
 ;-------------------------------------------------------;
 _Remote_Code_00_EF_17: ; ROW 6, BUTTON 4 (24)
 ;-------------------------------------------------------;
-; EEPROM Read
+; Edit Next
 ;-------------------------------------------------------;
     BTFSS   POWER_FLAG
     GOTO    _Remote_Code_Done
     ;---------------------------------------------------;
-#IF _EEPROM_DIAG_ENABLED_
-    CALL    _EE_Diag_Read
-#ENDIF ; _EEPROM_DIAG_ENABLED_
+    BTFSC	EDIT_FLAG
+    CALL	_Edit_Next
     ;---------------------------------------------------;
     GOTO    _Remote_Code_Done
 ;-------------------------------------------------------;
@@ -391,10 +401,6 @@ _Remote_Code_Done:
 _Init_Remote_Subsystem:
 ;-------------------------------------------------------;
     RETURN
-;-------------------------------------------------------;
-
-;-------------------------------------------------------;
-#ENDIF ; _IR_ENABLED_
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;

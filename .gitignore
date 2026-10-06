@@ -5,3 +5,8 @@
 *.map
 *.err
 *~
+
+Save_*/
+Context_Prompts/
+build_it*.sh
+12f1840_messaging.lkr

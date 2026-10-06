@@ -23,6 +23,9 @@
 ;-------------------------------------------------------;
 ; Defines
 ;-------------------------------------------------------;
+MIN_DISPLAY            EQU 1
+MAX_DISPLAY            EQU 6
+DISPLAY_MASK           EQU 0x07
 NUM_MATRIX_MODULES     EQU 17
     ;---------------------------------------------------;
 TIMER_100MS_RELOAD     EQU 20   ; * 5ms = 100ms
@@ -50,6 +53,10 @@ EE_GLASS_BIT           EQU 2
 MSGS_ENABLED_BYTE      EQU H'08'
 MSGS_ENABLED_BIT       EQU 3
 #DEFINE MSGS_ENABLED_FLAG Messaging_Flags, MSGS_ENABLED_BIT
+	;---------------------------------------------------;
+EDIT_FLAG_BYTE         EQU H'10'
+EDIT_FLAG_BIT          EQU 4
+#DEFINE EDIT_FLAG      Messaging_Flags, EDIT_FLAG_BIT
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -81,14 +88,8 @@ PRINT_CHAR_M MACRO character
 	GLOBAL Saved_Display
 	GLOBAL Update_Timer_HI
 	GLOBAL Update_Timer_LO
-	GLOBAL Colon_Timer_HI
-	GLOBAL Colon_Timer_LO
 	GLOBAL Display_Timer_HI
 	GLOBAL Display_Timer_LO
-	GLOBAL Saved_Seconds
-	GLOBAL DOW_CharPtr
-	GLOBAL CLOCK_Flags1
-	GLOBAL CLOCK_Flags2
 	GLOBAL Messaging_Flags
     ;---------------------------------------------------;
 
@@ -100,6 +101,13 @@ PRINT_CHAR_M MACRO character
     GLOBAL _Update_Messaging
     GLOBAL _Load_Msgs_Enabled_Flag
     GLOBAL _Print_Msgs_Disabled
+    GLOBAL _Print_No_Enabled
+    GLOBAL _Paint_Enable_Prompt
+    GLOBAL _Edit_Enter
+    GLOBAL _Edit_Yes
+    GLOBAL _Edit_No
+    GLOBAL _Edit_Next
+    GLOBAL _Edit_Exit
 ;-------------------------------------------------------;
 #ELSE ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;
@@ -110,14 +118,8 @@ PRINT_CHAR_M MACRO character
 	EXTERN Saved_Display
 	EXTERN Update_Timer_HI
 	EXTERN Update_Timer_LO
-	EXTERN Colon_Timer_HI
-	EXTERN Colon_Timer_LO
 	EXTERN Display_Timer_HI
 	EXTERN Display_Timer_LO
-	EXTERN Saved_Seconds
-	EXTERN DOW_CharPtr
-	EXTERN CLOCK_Flags1
-	EXTERN CLOCK_Flags2
 	EXTERN Messaging_Flags
     ;---------------------------------------------------;
 
@@ -129,6 +131,13 @@ PRINT_CHAR_M MACRO character
     EXTERN _Update_Messaging
     EXTERN _Load_Msgs_Enabled_Flag
     EXTERN _Print_Msgs_Disabled
+    EXTERN _Print_No_Enabled
+    EXTERN _Paint_Enable_Prompt
+    EXTERN _Edit_Enter
+    EXTERN _Edit_Yes
+    EXTERN _Edit_No
+    EXTERN _Edit_Next
+    EXTERN _Edit_Exit
 ;-------------------------------------------------------;
 #ENDIF ; !_MESSAGING.ASM_
 ;-------------------------------------------------------;

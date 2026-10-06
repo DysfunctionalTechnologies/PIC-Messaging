@@ -1,3 +1,0 @@
-#!/bin/sh
-echo "EXPIRED: use ./build_it.sh" >&2
-exit 1

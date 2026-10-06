@@ -1,39 +1,39 @@
-MESSAGING REMOTE V1.00
+MESSAGING REMOTE V1.01
 
-              CURRENT        CURRENT              CURRENT        NEW                  NEW                                 NEW
-First row:    PAROL          RING                 STICK          RING                 STICK                               MESSAGING
-- Button  1 - music OFF      bright UP            bright UP      RING bright up       [ignore]                            [ignore]
-- Button  2 - music ON       bright DOWN          bright DOWN    RING bright down     [ignore]                            [ignore]
-- Button  3 - ALL power OFF  ALL power OFF        ALL power OFF  ALL power OFF        ALL power OFF                       ALL power OFF
-- Button  4 - ALL power ON   ALL power ON         ALL power ON   ALL power ON         ALL power ON                        ALL power ON
+              CURRENT        CURRENT              CURRENT        V1.00                V1.00                               V1.00                    V1.01                V1.01                               V1.01                   V1.01
+First row:    PAROL          RING                 STICK          RING                 STICK                               PIC-MESSAGING            RING                 STICK                               PIC-MESSAGING           ESP32-Parol
+- Button  1 - music OFF      bright UP            bright UP      RING bright up       [ignore]                            [ignore]                 RING bright up       [ignore]                            [ignore]                Parol Music Vol-
+- Button  2 - music ON       bright DOWN          bright DOWN    RING bright down     [ignore]                            [ignore]                 RING bright down     [ignore]                            [ignore]                Parol Music Vol+
+- Button  3 - ALL power OFF  ALL power OFF        ALL power OFF  ALL power OFF        ALL power OFF                       ALL power OFF            ALL power OFF        ALL power OFF                       ALL power OFF           ALL Power OFF
+- Button  4 - ALL power ON   ALL power ON         ALL power ON   ALL power ON         ALL power ON                        ALL power ON             ALL power ON         ALL power ON                        ALL power ON            ALL Power ON
 
 Second row:
-- Button  5 - diagnostic     RED                  reset          [ignore]             [ignore]                            [ignore]
-- Button  6 - [ignore]       GREEN                [ignore]       [ignore]             RING/CLK/MSG select                 MSG ENABLE/DISABLE
-- Button  7 - [ignore]       BLUE                 [ignore]       [ignore]             STICK bright UP                     STICK bright UP
-- Button  8 - [ignore]       WHITE                [ignore]       [ignore]             STICK bright DOWN                   STICK bright DOWN
+- Button  5 - diagnostic     RED                  reset          [ignore]             [ignore]                            [ignore]                 [ignore]             [ignore]                            [ignore]                Parol (RGB) Bright Up
+- Button  6 - [ignore]       GREEN                [ignore]       [ignore]             RING/CLK/MSG select                 MSG ENABLE/DISABLE       [ignore]             RING/CLK/MSG select                 MSG ENABLE/DISABLE      Parol (RGB) Bright Down
+- Button  7 - [ignore]       BLUE                 [ignore]       [ignore]             STICK bright UP                     STICK bright UP          [ignore]             STICK bright UP                     STICK bright UP         Messaging Bright UP
+- Button  8 - [ignore]       WHITE                [ignore]       [ignore]             STICK bright DOWN                   STICK bright DOWN        [ignore]             STICK bright DOWN                   STICK bright DOWN       Messaging Bright DOWN
 
-                                                                 ONLY WHEN            LEFT - STICK CLK SEL                STICK MESSAGING
-Third row:                                                       RING SELECTED        RIGHT - STICK MSG SEL               ALWAYS SELECTED
-- Button  9 - [ignore]       cylon                HOURS+         cylon                HOURS+       TAP PAD 1              TAP PAD 1
-- Button 10 - [ignore]       fade up/down         MINUTES+       fade up/down         MINUTES+     TAP PAD 2 (ABC)        TAP PAD 2 (ABC)
-- Button 11 - [ignore]       flying balls         SECONDS+       flying balls         SECONDS+     TAP PAD 3 (DEF)        TAP PAD 3 (DEF)
-- Button 12 - [ignore]       rainbow              SAVE CLK       rainbow              SAVE CLK     SAVE MSG               SAVE MSG
+                                                                 ONLY WHEN            LEFT  - STICK CLK SELECT            STICK MESSAGING          ONLY WHEN            LEFT  - STICK CLK SELECT            STICK MESSAGING         MESSAGING
+Third row:                                                       RING SELECTED        RIGHT - STICK MSG SELECT            ALWAYS SELECTED          RING SELECTED        RIGHT - STICK MSG SELECT            ALWAYS SELECTED         ALWAYS SELECTED
+- Button  9 - [ignore]       cylon                HOURS+         cylon                HOURS+       TAP PAD 1              TAP PAD 1                cylon                HOURS+       EDIT                   EDIT                    Messaging ENABLE/DISABLE
+- Button 10 - [ignore]       fade up/down         MINUTES+       fade up/down         MINUTES+     TAP PAD 2 (ABC)        TAP PAD 2 (ABC)          fade up/down         MINUTES+     UP                     UP                      [ignore]
+- Button 11 - [ignore]       flying balls         SECONDS+       flying balls         SECONDS+     TAP PAD 3 (DEF)        TAP PAD 3 (DEF)          flying balls         SECONDS+     DOWN                   DOWN                    EDIT
+- Button 12 - [ignore]       rainbow              SAVE CLK       rainbow              SAVE CLK     SAVE MSG               SAVE MSG                 rainbow              SAVE CLK     OK                     OK                      EXIT
 
 Fourth row:
-- Button 13 - [ignore]       colors CW            HOURS-         colors CW            HOURS-       TAP PAD 4 (GHI)        TAP PAD 4 (GHI)
-- Button 14 - [ignore]       rocking America      MINUTES-       rocking America      MINUTES-     TAP PAD 5 (JKL)        TAP PAD 5 (JKL)
-- Button 15 - [ignore]       rocking Philippines  SECONDS-       rocking Philippines  SECONDS-     TAP PAD 6 (MNO)        TAP PAD 6 (MNO)
-- Button 16 - [ignore]       orchid CW            DISCARD CLK    orchid CW            DISCARD CLK  DISCARD MSG            DISCARD MSG
+- Button 13 - [ignore]       colors CW            HOURS-         colors CW            HOURS-       TAP PAD 4 (GHI)        TAP PAD 4 (GHI)          colors CW            HOURS-       SAVE                   SAVE                    [ignore]
+- Button 14 - [ignore]       rocking America      MINUTES-       rocking America      MINUTES-     TAP PAD 5 (JKL)        TAP PAD 5 (JKL)          rocking America      MINUTES-     DISCARD                DISCARD                 [ignore]
+- Button 15 - [ignore]       rocking Philippines  SECONDS-       rocking Philippines  SECONDS-     TAP PAD 6 (MNO)        TAP PAD 6 (MNO)          rocking Philippines  SECONDS-     CLEAR                  CLEAR                   CLEAR
+- Button 16 - [ignore]       orchid CW            DISCARD CLK    orchid CW            DISCARD CLK  DISCARD MSG            DISCARD MSG              orchid CW            DISCARD CLK  EXIT                   EXIT                    SAVE
 
 Fifth row: 
-- Button 17 - [ignore]       dandelion CW         MONTH+         dandelion CW         MONTH+       TAP PAD 7 (PQRS)       TAP PAD 7 (PQRS)
-- Button 18 - [ignore]       RED orbit CW         DATE+          RED orbit CW         DATE+        TAP PAD 8 (TUV)        TAP PAD 8 (TUV)
-- Button 19 - [ignore]       GREEN orbit CCW      YEAR+          GREEN orbit CCW      YEAR+        TAP PAD 9 (WXYZ)       TAP PAD 9 (WXYZ)
-- Button 20 - [ignore]       BLUE orbit CW        DOW+           BLUE orbit CW        DOW+         EEPROM WRITE/EDIT      EEPROM WRITE / EDIT
+- Button 17 - [ignore]       dandelion CW         MONTH+         dandelion CW         MONTH+       TAP PAD 7 (PQRS)       TAP PAD 7 (PQRS)         dandelion CW         MONTH+       [ignore]               [ignore]                [ignore]
+- Button 18 - [ignore]       RED orbit CW         DATE+          RED orbit CW         DATE+        TAP PAD 8 (TUV)        TAP PAD 8 (TUV)          RED orbit CW         DATE+        [ignore]               [ignore]                [ignore]
+- Button 19 - [ignore]       GREEN orbit CCW      YEAR+          GREEN orbit CCW      YEAR+        TAP PAD 9 (WXYZ)       TAP PAD 9 (WXYZ)         GREEN orbit CCW      YEAR+        [ignore]               [ignore]                UP
+- Button 20 - [ignore]       BLUE orbit CW        DOW+           BLUE orbit CW        DOW+         EEPROM WRITE/EDIT      EEPROM WRITE / EDIT      BLUE orbit CW        DOW+         [ignore]               [ignore]                DISCARD
 
 Sixth row:
-- Button 21 - [ignore]       WHITE orbit CCW      MONTH-         WHITE orbit CCW      MONTH-       TAP PAD *              TAP PAD *
-- Button 22 - [ignore]       [ignore]             DATE-          select color (RGBW)  DATE-        TAP PAD 0              TAP PAD 0
-- Button 23 - [ignore]       reset                YEAR-          reset                YEAR-        TAP PAD #              TAP PAD #
-- Button 24 - [ignore]       init patterns        DOW-           init patterns        DOW-         EEPROM READ/NEXT SLOT  EEPROM READ / NEXT SLOT
+- Button 21 - [ignore]       WHITE orbit CCW      MONTH-         WHITE orbit CCW      MONTH-       TAP PAD *              TAP PAD *                WHITE orbit CCW      MONTH-       [ignore]               [ignore]                [ignore]
+- Button 22 - [ignore]       [ignore]             DATE-          select color (RGBW)  DATE-        TAP PAD 0              TAP PAD 0                select color (RGBW)  DATE-        [ignore]               [ignore]                [ignore]
+- Button 23 - [ignore]       reset                YEAR-          reset                YEAR-        TAP PAD #              TAP PAD #                reset                YEAR-        [ignore]               [ignore]                DOWN
+- Button 24 - [ignore]       init patterns        DOW-           init patterns        DOW-         EEPROM READ/NEXT SLOT  EEPROM READ / NEXT SLOT  init patterns        DOW-         [ignore]               [ignore]                OK

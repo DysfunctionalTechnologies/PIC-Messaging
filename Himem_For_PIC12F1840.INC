@@ -29,18 +29,16 @@
 #DEFINE SPECIAL_COLON            253
 #DEFINE SPECIAL_SLASH            254
     ;---------------------------------------------------;
+#DEFINE IDLE_BITMAP_0            240
+#DEFINE IDLE_BITMAP_1            241
+#DEFINE IDLE_BITMAP_2            242
+#DEFINE IDLE_BITMAP_3            243
+#DEFINE IDLE_BITMAP_4            244
+#DEFINE IDLE_BITMAP_5            245
+#DEFINE IDLE_BITMAP_6            246
+#DEFINE IDLE_BITMAP_7            247
+    ;---------------------------------------------------;
 #DEFINE EOF_MARKER               255
-    ;---------------------------------------------------;
-#DEFINE STRING_LENGTH            17
-#DEFINE VERSION_STRING_PTR       (STRING_LENGTH * 0)
-#DEFINE WELCOME_TO_STRING_PTR    (STRING_LENGTH * 1)
-#DEFINE DYSFUNCTIONAL_STRING_PTR (STRING_LENGTH * 2)
-#DEFINE TECHNOLOGIES_STRING_PTR  (STRING_LENGTH * 3)
-#DEFINE PHILIPPINES_STRING_PTR   (STRING_LENGTH * 4)
-#DEFINE GOD_BLESS_USA_STRING_PTR (STRING_LENGTH * 5)
-    ;---------------------------------------------------;
-#DEFINE DOW_LENGTH               3
-#DEFINE DOW_STRING_PTR           (STRING_LENGTH * 6)
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -51,23 +49,33 @@
 ;-------------------------------------------------------;
 #IFDEF _HIMEM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
-    ; Global Routines
+    ; Global Data
     ;---------------------------------------------------;
-    GLOBAL _Init_Himem_Subsystem
-    ;---------------------------------------------------;
+    GLOBAL _Str_No_Enabled
     GLOBAL _Str_Msgs_Disabled
     GLOBAL _Str_Version
     GLOBAL _Font_Table
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
+    ; Global Routines
+    ;---------------------------------------------------;
+    GLOBAL _Init_Himem_Subsystem
 ;-------------------------------------------------------;
 #ELSE ; !_HIMEM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;
-    ; External Routines
+    ; External Data
     ;---------------------------------------------------;
-    EXTERN _Init_Himem_Subsystem
-    ;---------------------------------------------------;
+    EXTERN _Str_No_Enabled
     EXTERN _Str_Msgs_Disabled
     EXTERN _Str_Version
     EXTERN _Font_Table
+    ;---------------------------------------------------;
+
+    ;---------------------------------------------------;
+    ; External Routines
+    ;---------------------------------------------------;
+    EXTERN _Init_Himem_Subsystem
 ;-------------------------------------------------------;
 #ENDIF ; !_HIMEM_FOR_PIC12F1840.ASM_
 ;-------------------------------------------------------;

@@ -1,6 +1,6 @@
 ;-------------------------------------------------------;
-; Name:      EEPROM_For_PIC12F1840.INC
-; Use:       EEPROM For PIC12F1840 Routines Header File
+; Name:      Carousel.INC
+; Use:       Carousel Routines Header File
 ;-------------------------------------------------------;
 ; Copyright: (C)2026 DTP
 ;            Dysfunctional Technologies, Philippines
@@ -17,12 +17,19 @@
 ;            - I2C        (peripherals)
 ;            - IR Remote  (user control & input)
 ;-------------------------------------------------------;
-#DEFINE _EEPROM_FOR_PIC12F1840.INC_
+#DEFINE _CAROUSEL.INC_
 ;-------------------------------------------------------;
     
 ;-------------------------------------------------------;
 ; Defines
 ;-------------------------------------------------------;
+EE_FLAGS             EQU H'FF'
+EE_FLAG_MSG_ENABLED  EQU 0x80
+EE_FLAG_MSG_DISABLED EQU 0x00
+EE_END_OF_SLOTS      EQU 0xFF
+	;---------------------------------------------------;
+SLOT_ENABLED_BIT     EQU 7
+DWELL_TICKS_MASK     EQU H'7F'
 ;-------------------------------------------------------;
     
 ;-------------------------------------------------------;
@@ -31,37 +38,35 @@
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
-#IFDEF _EEPROM_FOR_PIC12F1840.ASM_
+#IFDEF _CAROUSEL.ASM_
 ;-------------------------------------------------------;
     ; Global Data
     ;---------------------------------------------------;
-	GLOBAL EE_Addr
-	GLOBAL EE_Data
+	GLOBAL Slot_Dwell
     ;---------------------------------------------------;
 
     ;---------------------------------------------------;
     ; Global Routines
     ;---------------------------------------------------;
-    GLOBAL _Init_EEPROM_Subsystem
+    GLOBAL _Init_Carousel_Subsystem
     ;---------------------------------------------------;
-    GLOBAL _EE_Read_Byte
-    GLOBAL _EE_Write_Byte
+    GLOBAL _EE_Print_Slot
+    GLOBAL _Load_Dwell_Timer
 ;-------------------------------------------------------;
-#ELSE ; !_EEPROM_FOR_PIC12F1840.ASM_
+#ELSE ; !_CAROUSEL.ASM_
 ;-------------------------------------------------------;
     ; External Data
     ;---------------------------------------------------;
-	EXTERN EE_Addr
-	EXTERN EE_Data
+	EXTERN Slot_Dwell
     ;---------------------------------------------------;
 
     ;---------------------------------------------------;
     ; External Routines
     ;---------------------------------------------------;
-    EXTERN _Init_EEPROM_Subsystem
+    EXTERN _Init_Carousel_Subsystem
     ;---------------------------------------------------;
-    EXTERN _EE_Read_Byte
-    EXTERN _EE_Write_Byte
+    EXTERN _EE_Print_Slot
+    EXTERN _Load_Dwell_Timer
 ;-------------------------------------------------------;
-#ENDIF ; !_EEPROM_FOR_PIC12F1840.ASM_
+#ENDIF ; !_CAROUSEL.ASM_
 ;-------------------------------------------------------;

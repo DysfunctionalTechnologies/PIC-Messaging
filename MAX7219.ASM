@@ -37,6 +37,9 @@ Matrix_Line_Ptr  res 1
 Matrix_Digit_Ptr res 1
 Buffer_Line_Ptr  res 1
 Buffer_Digit_Ptr res 1
+    ;---------------------------------------------------;
+Save_Digit_Ptr   res 1
+Save_Line_Ptr    res 1
 ;-------------------------------------------------------;
 ; Linear Buffers 
 ;-------------------------------------------------------;
@@ -171,19 +174,28 @@ _Print_Char:
     ;---------------------------------------------------;
 _PC_Next_Buffer_Line:
     ;---------------------------------------------------;
-    CALL    _Read_Buffer
-    ANDLW   H'83'
-    MOVWF   Char2Print
+;    CALL    _Read_Buffer
+;    ANDLW   H'83'
+;    MOVWF   Char2Print
     MOVFW   Buffer_Line_Ptr
     CALL    _Set_Font_Line_Ptr
     CALL    _Get_Data_From_Font
-    ANDLW   H'7C'
-    IORWF   Char2Print, W
+;    ANDLW   H'7C'
+;    IORWF   Char2Print, W
+	MOVWF	Char2Print
     CALL    _Write_Buffer
     CALL    _Next_Buffer_Line_Ptr
     SKPZ
     GOTO    _PC_Next_Buffer_Line
-    GOTO    _Update_Matrix
+    CALL    _Update_Matrix
+    BANKSEL MEMORY
+    INCF    Buffer_Digit_Ptr, F
+    MOVLW   MAX_DIGITS
+    SUBWF   Buffer_Digit_Ptr, W
+    SKPNC
+    CLRF    Buffer_Digit_Ptr
+	;---------------------------------------------------;
+    RETURN
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
@@ -276,9 +288,9 @@ _CM_Next:
 _Update_Matrix:
 ;-------------------------------------------------------;
     MOVFW   Buffer_Digit_Ptr
-    MOVWF   Temp1
+    MOVWF   Save_Digit_Ptr
     MOVFW   Buffer_Line_Ptr
-    MOVWF   Temp2
+    MOVWF   Save_Line_Ptr
     ;---------------------------------------------------;
     CALL    _Init_Matrix
     CLRF    Matrix_Line_Ptr
@@ -335,9 +347,9 @@ _UM_Next_Digit:
     SKPZ
     GOTO    _UM_Next_Line
     ;---------------------------------------------------;
-    MOVFW   Temp2
+    MOVFW   Save_Line_Ptr
     MOVWF   Buffer_Line_Ptr
-    MOVFW   Temp1
+    MOVFW   Save_Digit_Ptr
     MOVWF   Buffer_Digit_Ptr
     ;---------------------------------------------------;
     RETURN
