@@ -110,15 +110,18 @@ _Initialize_System:
     CALL	_Init_Himem_Subsystem
     PAGESEL $
     ;---------------------------------------------------;
-    CALL    _Init_EEPROM_Subsystem
     CALL    _Init_Timer_0_Subsystem
+    CALL    _Init_Timer_1_Subsystem
+    CALL    _Init_Timer_2_Subsystem
+    ;---------------------------------------------------;
+    CALL    _Init_EEPROM_Subsystem
     CALL    _Init_MAX7219_Subsystem
     CALL    _Init_Font_Subsystem
     ;---------------------------------------------------;
-    CALL    _Init_Timer_2_Subsystem
     CALL    _Init_IR_Subsystem
     CALL    _Init_Remote_Subsystem
     ;---------------------------------------------------;
+    CALL	_Init_Idle_Subsystem
     CALL	_Init_Carousel_Subsystem
     CALL    _Init_Messaging_Subsystem
     ;---------------------------------------------------;

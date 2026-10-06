@@ -124,18 +124,21 @@ CRASH_AND_BURN_M MACRO
 ;-------------------------------------------------------;
 
 ;-------------------------------------------------------;
+#INCLUDE Timer_0_For_PIC12F1840.INC
+#INCLUDE Timer_1_For_PIC12F1840.INC
+#INCLUDE Timer_2_For_PIC12F1840.INC
+    ;---------------------------------------------------;
 #INCLUDE Himem_For_PIC12F1840.INC
     ;---------------------------------------------------;
 #INCLUDE EEPROM_For_PIC12F1840.INC
     ;---------------------------------------------------;
-#INCLUDE Timer_0_For_PIC12F1840.INC
 #INCLUDE MAX7219.INC
 	;---------------------------------------------------;
-#INCLUDE Timer_2_For_PIC12F1840.INC
 #INCLUDE IR_For_PIC12F1840.INC
 #INCLUDE Remote.INC
     ;---------------------------------------------------;
 #INCLUDE Font.INC
+#INCLUDE Idle.INC
 #INCLUDE Carousel.INC
 #INCLUDE Messaging_For_8x136_Matrix_Display.INC
 ;-------------------------------------------------------;
